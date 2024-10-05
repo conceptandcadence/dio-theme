@@ -85,45 +85,6 @@
         "padding_bottom": 36
       }
     },
-    "collage": {
-      "type": "collage",
-      "blocks": {
-        "collection-0": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "product": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "second_image": false
-          }
-        },
-        "collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
-      ],
-      "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "card_styles": "product-card-wrapper",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "video": {
       "type": "video",
       "settings": {
@@ -144,8 +105,8 @@
         "column1": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "title": "Simple Ingredients, Divine Taste",
+            "text": "<p>Only clean & simple ingredients. No artificial colors, flavors, or preservatives.</p>",
             "link_label": "",
             "link": ""
           }
@@ -153,8 +114,8 @@
         "column2": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "title": "sweetened sinlessly",
+            "text": "<p>Our lower sugar luxurious libations use natural sweeteners, and contain under 8g of sugar per can.</p>",
             "link_label": "",
             "link": ""
           }
@@ -162,8 +123,8 @@
         "column3": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "title": "Herculean Strength Spirits",
+            "text": "<p>Each of our top-shelf  spirits contain two  servings and 13.5-15%  ABV per cocktail.</p>",
             "link_label": "",
             "link": ""
           }
@@ -195,7 +156,6 @@
   "order": [
     "image_banner",
     "featured_collection",
-    "collage",
     "video",
     "multicolumn"
   ]
