@@ -47,14 +47,14 @@
         "image": "shopify://shop_images/hp-hero-d.jpg",
         "image_overlay_opacity": 0,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
+        "desktop_content_position": "middle-left",
         "show_text_box": true,
         "desktop_content_alignment": "left",
         "color_scheme": "scheme-1",
         "image_behavior": "ambient",
         "mobile_content_alignment": "left",
         "stack_images_on_mobile": false,
-        "show_text_below": false
+        "show_text_below": true
       }
     },
     "rich_text": {
