@@ -105,6 +105,7 @@
         "column1": {
           "type": "column",
           "settings": {
+            "image": "shopify://shop_images/icon-snake.svg",
             "title": "Simple Ingredients, Divine Taste",
             "text": "<p>Only clean & simple ingredients. No artificial colors, flavors, or preservatives.</p>",
             "link_label": "",
@@ -114,6 +115,7 @@
         "column2": {
           "type": "column",
           "settings": {
+            "image": "shopify://shop_images/icon-snake.svg",
             "title": "sweetened sinlessly",
             "text": "<p>Our lower sugar luxurious libations use natural sweeteners, and contain under 8g of sugar per can.</p>",
             "link_label": "",
@@ -123,6 +125,7 @@
         "column3": {
           "type": "column",
           "settings": {
+            "image": "shopify://shop_images/icon-snake.svg",
             "title": "Herculean Strength Spirits",
             "text": "<p>Each of our top-shelf  spirits contain two  servings and 13.5-15%  ABV per cocktail.</p>",
             "link_label": "",
