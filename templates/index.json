@@ -85,20 +85,6 @@
         "padding_bottom": 36
       }
     },
-    "video": {
-      "type": "video",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
-        "full_width": false,
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "multicolumn": {
       "type": "multicolumn",
       "blocks": {
@@ -154,12 +140,59 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "image_with_text_hMXjTj": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_7cm9F9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Distilled from the Divine",
+            "heading_size": "h1"
+          }
+        },
+        "text_DRQ97N": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dionysus, the god of festivity and pleasure, bestowed upon mortals the gift of his exquisite elixirs. Within each drink is an instant encounter with splendors heretofore known only to the divine.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_7wJfrX": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_7cm9F9",
+        "text_DRQ97N",
+        "button_7wJfrX"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/hp-about1.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "image_banner",
     "featured_collection",
-    "video",
-    "multicolumn"
+    "multicolumn",
+    "image_with_text_hMXjTj"
   ]
 }
