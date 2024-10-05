@@ -161,8 +161,8 @@
         "button_7wJfrX": {
           "type": "button",
           "settings": {
-            "button_label": "Button label",
-            "button_link": "",
+            "button_label": "Our Story",
+            "button_link": "shopify://pages/our-story",
             "button_style_secondary": false
           }
         }
