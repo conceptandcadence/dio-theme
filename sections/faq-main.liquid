@@ -1,0 +1,280 @@
+<div class='tw-grid lg:tw-grid-cols-3 tw-relative'>
+  <section
+    class='tw-bg-white tw-col-span-1 tw-px-10 tw-pb-16 lg:sticky lg:top-0'
+    data-section-type='stockists'
+    data-section-id='{{ section.id }}'
+  >
+    {% render 'fancy-frame2-top' %}
+    <div class='fancy-frame-content tw-relative'>
+      <div class='text-black tw-px-24 tw-pb-12 tw-flex tw-flex-col tw-justify-center tw-items-center tw-relative'>
+        {% render 'icon-acorn',
+          class: 'tw-size-16  tw-translate-y-[-280%] tw-translate-x-[-50%] tw-absolute tw-top-0 tw-left-1/2'
+        %}
+        {%- if section.settings.contact_title != blank -%}
+          <h2 class='h3 tw-text-center inline-richtext tw--mt-14'>
+            {{ section.settings.contact_title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.contact_description != blank -%}
+          <div class='tw-my-6 tw-text-lg tw-leading-tight tw-mb-12 tw-text-center inline-richtext'>
+            {{ section.settings.contact_description }}
+          </div>
+        {%- endif -%}
+        {%- liquid
+          assign contact_form_class = 'isolate tw-w-full'
+          if settings.animations_reveal_on_scroll
+            assign contact_form_class = 'isolate scroll-trigger animate--slide-in tw-w-full'
+          endif
+        -%}
+        {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+          {%- if form.posted_successfully? -%}
+            <h2 class='form-status form-status-list form__message' tabindex='-1' autofocus>
+              {% render 'icon-success' %}
+              {{ 'templates.contact.form.post_success' | t }}
+            </h2>
+          {%- elsif form.errors -%}
+            <div class='form__message'>
+              <h2 class='form-status caption-large text-body' role='alert' tabindex='-1' autofocus>
+                {% render 'icon-error' %}
+                {{ 'templates.contact.form.error_heading' | t }}
+              </h2>
+            </div>
+            <ul class='form-status-list caption-large' role='list'>
+              <li>
+                <a href='#ContactForm-email' class='link'>
+                  {{ form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email }}
+                </a>
+              </li>
+            </ul>
+          {%- endif -%}
+          <div class='contact__fields'>
+            <div class='field no-outline tw-border-gold tw-border tw-rounded-2xl tw-mb-4'>
+              <input
+                class='field__input tw-border-gold tw-border tw-rounded-3xl'
+                autocomplete='name'
+                type='text'
+                id='ContactForm-name'
+                name='contact[{{ 'templates.contact.form.name' | t }}]'
+                value='{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}'
+                placeholder='{{ 'templates.contact.form.name' | t }}'
+              >
+              <label class='field__label' for='ContactForm-name'>{{ 'templates.contact.form.name' | t }}</label>
+            </div>
+            <div class='field no-outline field--with-error tw-border-gold tw-border tw-rounded-2xl tw-mb-4'>
+              <input
+                autocomplete='email'
+                type='email'
+                id='ContactForm-email'
+                class='field__input tw-border-gold tw-border tw-rounded-3xl'
+                name='contact[email]'
+                spellcheck='false'
+                autocapitalize='off'
+                value='{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}'
+                aria-required='true'
+                {% if form.errors contains 'email' %}
+                  aria-invalid='true'
+                  aria-describedby='ContactForm-email-error'
+                {% endif %}
+                placeholder='{{ 'templates.contact.form.email' | t }}'
+              >
+              <label class='field__label' for='ContactForm-email'>
+                {{- 'templates.contact.form.email' | t }}
+                <span aria-hidden='true'>*</span></label
+              >
+              {%- if form.errors contains 'email' -%}
+                <small class='contact__field-error' id='ContactForm-email-error'>
+                  <span class='visually-hidden'>{{ 'accessibility.error' | t }}</span>
+                  <span class='form__message'>
+                    {%- render 'icon-error' -%}
+                    {{- form.errors.translated_fields.email | capitalize }}
+                    {{ form.errors.messages.email -}}
+                  </span>
+                </small>
+              {%- endif -%}
+            </div>
+          </div>
+          <div class='field no-outline tw-border-gold tw-border tw-rounded-2xl tw-mb-4'>
+            <textarea
+              rows='10'
+              id='ContactForm-body'
+              class='field__input text-area tw-border-gold tw-border tw-rounded-3xl'
+              name='contact[Comment]'
+              placeholder='How can we help?'
+            >
+									{{- form.body -}}
+								</textarea>
+            <label class='form__label field__label' for='ContactForm-body'>
+              {{- 'templates.contact.form.comment' | t -}}
+            </label>
+          </div>
+          <div class='contact__button'>
+            <button type='submit' class='button button--primary tw-w-full tw-relative tw-mt-8'>
+              <div class='button-inner'>
+                <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                  {{ 'templates.contact.form.send' | t }}
+                </span>
+              </div>
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+      {% render 'fancy-frame2-side',
+        class: 'tw-pointer-events-none tw-absolute tw-ml-[-0.5px] tw-mt-[-1.5px] tw-h-[calc(100%+3px)] tw-w-[calc(100%+1.25px)] tw-top-0 tw-left-0'
+      %}
+    </div>
+
+    {% render 'fancy-frame2-bottom' %}
+  </section>
+
+  <section
+    class='tw-bg-white tw-px-10 lg:tw-mt-[110px] tw-pb-16 lg:tw-col-span-2 lg:tw-px-[150px]'
+    data-section-type='stockists'
+    data-section-id='{{ section.id }}'
+  >
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'separator' -%}
+        {% assign current_section = block.settings.title | downcase %}
+        <div class='stockist-section' data-title='{{ block.settings.title | escape }}'>
+          <div class='Stockists' data-title='online-only'>
+            <header class='StockistsHeader tw-flex tw-justify-center lg:tw-justify-start tw-mt-20 tw-pb-12 tw-border-gold tw-border-b'>
+              <h3 class='h4 rel'>
+                {{ block.settings.title | escape }}
+              </h3>
+            </header>
+            <div class='StockistsList'>
+              <div class='Stockist__Overview c-white'></div>
+              {%- for block in section.blocks -%}
+                {% assign entry_section = block.settings.section | downcase %}
+                {%- if block.type == 'question' and current_section == entry_section -%}
+                  <div class='Stockist' data-title='{{ block.settings.title | escape }}'>
+                    <div class='product__accordion accordion tw-py-8' {{ block.shopify_attributes }}>
+                      <details id='Details-{{ block.id }}-{{ section.id }}' class='tw-border-gold tw-border-b'>
+                        <summary class='tw-flex tw-justify-between tw-mb-8'>
+                          <div class='summary__title'>
+                            <span class='Stockist__Heading Heading tw-font-quote tw-text-3xl'>
+                              {{- block.settings.title | escape -}}
+                            </span>
+                          </div>
+                          {% render 'icon-fancy-arrow',
+                            class: 'summary-arrow tw-w-5 tw-transition-transform duration-500 -tw-rotate-90'
+                          %}
+                        </summary>
+                        <div class='accordion__content rte' id='ProductAccordion-{{ block.id }}-{{ section.id }}'>
+                          {%- if block.settings.answer != blank -%}
+                            <div class='Stockist__Social *:tw-mb-4 tw-pb-6'>{{ block.settings.answer }}</div>
+                          {%- endif -%}
+                        </div>
+                      </details>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+</div>
+
+<style>
+  #stockist-widget .stockist-horizontal .stockist-side-panel:after,
+  #stockist-widget .stockist-search-form:after {
+    content: none !important;
+  }
+  [aria-expanded='true'] .summary-arrow {
+    transform: rotate(0);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "shopify-section--faqs",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Section Title",
+      "default": "need divine intervention?"
+    },
+    {
+      "type": "richtext",
+      "id": "contact_description",
+      "label": "Contact Section Description",
+      "default": "<p>Take a look at our frequently asked questions. If you can’t find an answer to your question, reach out to us at <a href='mailto:info@drinkdio.com'>mailto:info@drinkdio.com</a></p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "separator",
+      "name": "Section separator",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Default"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Important information on...</p>"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        },
+        {
+          "type": "text",
+          "id": "section",
+          "label": "Section"
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        },
+        {
+          "type": "text",
+          "id": "section",
+          "label": "Section"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQs"
+    }
+  ]
+}
+{% endschema %}

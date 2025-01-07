@@ -14,14 +14,45 @@
   }
 {%- endstyle -%}
 
-<div class='page-width page-width--narrow section-{{ section.id }}-padding'>
-  <h1 class='main-page-title page-title tw-text-center h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}'>
+<div class='page-width section-{{ section.id }}-padding'>
+  <h1 class='main-page-title page-title tw-text-center tw-text-6xl tw-uppercase tw-font-heading{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}'>
     {{ page.title | escape }}
   </h1>
-  <div class='rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'>
+  <div class='stockists-wrapper rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'>
     {{ page.content }}
   </div>
 </div>
+<style>
+  #stockist-widget {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .stockists-wrapper > div {
+    text-align: center !important;
+  }
+
+  #stockist-widget .stockist-query-entry .stockist-search-button button {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  #stockist-widget .stockist-search-filter-checkbox input {
+    margin-top: 3px;
+  }
+
+  #stockist-widget .stockist-powered-by-link {
+    display: none;
+  }
+
+  #stockist-widget .stockist-result-name {
+    font-family: var(--font-subheading-family);
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+</style>
 
 {% schema %}
 {

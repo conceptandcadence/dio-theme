@@ -40,10 +40,10 @@
       assign ratio = 1
     endif
   -%}
-  <div class='card-wrapper product-card-wrapper underline-links-hover'>
+  <div class='card-wrapper collection product-card-wrapper'>
     <div
       class='
-        card card--{{ settings.card_style }}
+        card collection card--{{ settings.card_style }}
         {% if card_product.featured_media %} card--media{% else %} card--text{% endif %}
         {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
         {% if image_shape and image_shape != 'default' %} card--shape{% endif %}
@@ -53,13 +53,43 @@
       '
       style='--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;'
     >
+      <a
+        href='{{ card_product.url }}'
+        class='full-unstyled-link tw-absolute tw-top-0 tw-bottom-0 tw-left-0 tw-right-0'
+      >
+        <span class='visually-hidden'>{{ card_product.title | escape }}</span>
+      </a>
       <div
         class='card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if card_product.featured_media or settings.card_style == 'standard' %} ratio{% endif %}'
         style='--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;'
       >
-        {%- if card_product.featured_media -%}
+        {% assign collection_media = card_product.metafields.collection.image %}
+
+        {%- if collection_media -%}
+          <div class='card__media relative{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}'>
+            <div class='media media--transparent corners--fancy-frame'>
+              {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+              {% if collection_media.value.media_type == 'video' %}
+                {% render 'responsive-video',
+                  video: collection_media.value,
+                  classes: 'responsive-video',
+                  defer: true,
+                  autoplay: true
+                %}
+              {% else %}
+                {% render 'responsive-image',
+                  media: collection_media,
+                  classes: 'img responsive-image motion-reduce',
+                  defer: true
+                %}
+              {% endif %}
+
+              {% render 'corners-fancy' %}
+            </div>
+          </div>
+        {%- elsif card_product.featured_media -%}
           <div class='card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}'>
-            <div class='media media--transparent media--hover-effect'>
+            <div class='media media--transparent'>
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
               <img
                 srcset='
@@ -103,6 +133,7 @@
                   height='{{ card_product.media[1].height }}'
                 >
               {%- endif -%}
+              {% render 'corners-fancy' %}
             </div>
           </div>
         {%- endif -%}
@@ -117,7 +148,7 @@
               <a
                 href='{{ card_product.url }}'
                 id='StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}'
-                class='full-unstyled-link'
+                class='full-unstyled-link h2'
                 aria-labelledby='StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}'
               >
                 {{ card_product.title | escape }}
@@ -141,12 +172,24 @@
               </span>
             {%- endif -%}
           </div>
+          <a
+            href='{{ card_product.url }}'
+            class='tw-absolute tw-inset-0'
+          >
+            <span class='tw-sr-only'>{{ card_product.title }}</span>
+          </a>
         </div>
       </div>
-      <div class='card__content'>
-        <div class='card__information'>
+      <div class='card__content tw-relative tw-flex tw-justify-center tw-text-center'>
+        <div class='card__information tw-flex tw-flex-col tw-justify-center tw-items-center tw-max-w-[500px]'>
+          {% assign decoration = card_product.metafields.flavor.decoration %}
+          {%- if decoration -%}
+            <div class='card__deco tw-text-gold tw-fill-gold tw-mx-auto tw-w-[100px] md:tw-mb-6'>
+              <img src='{{ decoration | img_url }}' width='130' height='59' alt='{{ card_product.title | escape }}'>
+            </div>
+          {%- endif -%}
           <h3
-            class='card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}'
+            class='card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h3{% endif %}'
             {% if card_product.featured_media or settings.card_style == 'card' %}
               id='title-{{ section_id }}-{{ card_product.id }}'
             {% endif %}
@@ -154,7 +197,7 @@
             <a
               href='{{ card_product.url }}'
               id='CardLink-{{ section_id }}-{{ card_product.id }}'
-              class='full-unstyled-link'
+              class='full-unstyled-link h2 tw-p-4 tw-text-align tw-text-balance'
               aria-labelledby='CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}'
             >
               {{ card_product.title | escape }}
@@ -166,7 +209,15 @@
               <div class='caption-with-letter-spacing light'>{{ card_product.vendor }}</div>
             {%- endif -%}
 
-            <span class='caption-large light'>{{ block.settings.description | escape }}</span>
+            {% assign description = card_product.metafields.collection.blurb | metafield_tag %}
+            {%- if description -%}
+              <div class='card-description p tw-py-6  tw-text-center'>{{ description }}</div>
+            {%- endif -%}
+
+            {% assign footer = card_product.metafields.collection.footer | metafield_tag %}
+            {%- if footer -%}
+              <div class='card-footer h5 tw-text-center'>{{ footer }}</div>
+            {%- endif -%}
 
             {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
               {% liquid
@@ -204,7 +255,6 @@
               </p>
             {%- endif -%}
 
-            {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
             {%- if card_product.quantity_price_breaks_configured? -%}
               {% if card_product.variants.size == 1 and quick_add == 'bulk' %}
                 {% liquid
@@ -301,22 +351,32 @@
             {% if card_product.tags contains 'hide-options' %}
               {% assign options_allowed = false %}
             {% endif %}
+            {% if card_product.metafields.collection.disable_quickadd %}
+              {% assign options_allowed = false %}
+              {% assign disable_quickadd = true %}
+            {% endif %}
             {%- if options_allowed and card_product.variants.size > 1 -%}
               <modal-opener data-modal='#QuickAdd-{{ card_product.id }}'>
                 <button
                   id='{{ product_form_id }}-submit'
                   type='submit'
                   name='add'
-                  class='quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}'
+                  class='quick-add__submit button button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}'
                   aria-haspopup='dialog'
                   aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
                   data-product-url='{{ card_product.url }}'
                 >
-                  {{ 'products.product.choose_options' | t }}
-                  {%- if horizontal_quick_add -%}
-                    <span class='icon-wrap'>{% render 'icon-arrow' %}</span>
-                  {%- endif -%}
-                  {%- render 'loading-spinner' -%}
+                  <div class='button-inner'>
+                    <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                      {{ 'products.product.choose_options' | t }}
+                      <span class='tw-px-2'>&mdash;</span>
+                      {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+                      {%- if horizontal_quick_add -%}
+                        <span class='icon-wrap'>{% render 'icon-arrow' %}</span>
+                      {%- endif -%}
+                      {%- render 'loading-spinner' -%}
+                    </span>
+                  </div>
                 </button>
               </modal-opener>
               <quick-add-modal id='QuickAdd-{{ card_product.id }}' class='quick-add-modal'>
@@ -356,34 +416,55 @@
                       disabled
                     {% endif %}
                   >
-                  <button
-                    id='{{ product_form_id }}-submit'
-                    type='submit'
-                    name='add'
-                    class='quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}'
-                    aria-haspopup='dialog'
-                    aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
-                    aria-live='polite'
-                    data-sold-out-message='true'
-                    {% if card_product.selected_or_first_available_variant.available == false %}
-                      disabled
-                    {% endif %}
-                  >
-                    <span>
-                      {%- if card_product.selected_or_first_available_variant.available -%}
-                        {{ 'products.product.add_to_cart' | t }}
-                      {%- else -%}
-                        {{ 'products.product.sold_out' | t }}
-                      {%- endif -%}
-                    </span>
-                    <span class='sold-out-message hidden'>
-                      {{ 'products.product.sold_out' | t }}
-                    </span>
-                    {%- if horizontal_quick_add -%}
-                      <span class='icon-wrap'>{% render 'icon-plus' %}</span>
-                    {%- endif -%}
-                    {%- render 'loading-spinner' -%}
-                  </button>
+                  {% if disable_quickadd %}
+                    <a
+                      class='quick-add__submit tw-w-full lg:tw-max-w-[300px] button button--primary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}'
+                      data-sold-out-message='true'
+                      href='{{ card_product.url }}'
+                    >
+                      <div class='button-inner'>
+                        <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                          <span>
+                           shop now
+                        </span>
+                      </div>
+                    </a>
+                  {% else %}
+                    <button
+                      id='{{ product_form_id }}-submit'
+                      type='submit'
+                      name='add'
+                      class='quick-add__submit tw-w-full lg:tw-max-w-[300px] button button--primary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}'
+                      aria-haspopup='dialog'
+                      aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
+                      aria-live='polite'
+                      data-sold-out-message='true'
+                      {% if card_product.selected_or_first_available_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      <div class='button-inner'>
+                        <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                          <span>
+                            {%- if card_product.selected_or_first_available_variant.available -%}
+                              {{ 'products.product.add_to_cart' | t }}
+                            {%- else -%}
+                              {{ 'products.product.sold_out' | t }}
+                            {%- endif -%}
+                          </span>
+                          <span class='sold-out-message hidden'>
+                            {{ 'products.product.sold_out' | t }}
+                          </span>
+                          <span class='tw-px-2'>&mdash;</span>
+                          {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+                          {%- if horizontal_quick_add -%}
+                            <span class='icon-wrap'>{% render 'icon-plus' %}</span>
+                          {%- endif -%}
+                          {%- render 'loading-spinner' -%}
+                        </span>
+                      </div>
+                    </button>
+                  {% endif %}
                 {%- endform -%}
               </product-form>
             {%- endif -%}
@@ -401,7 +482,7 @@
                   id='{{ product_form_id }}-submit'
                   type='submit'
                   name='add'
-                  class='quick-add__submit button button--full-width button--secondary'
+                  class='quick-add__submit button button--secondary'
                   aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
                   data-sold-out-message='true'
                   disabled
@@ -432,7 +513,7 @@
                   id='{{ product_form_id }}-submit'
                   type='submit'
                   name='add'
-                  class='quick-add__submit button button--full-width button--secondary'
+                  class='quick-add__submit button button--secondary'
                   aria-haspopup='dialog'
                   aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
                   data-product-url='{{ card_product.url }}'

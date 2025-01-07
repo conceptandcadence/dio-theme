@@ -1,0 +1,145 @@
+{% capture callouts %}
+	{% for block in section.blocks %}
+			<span class="h3 tw-px-12">{{ block.settings.title }}</span>
+				<svg class="h3 tw-fill-gold" viewBox='0 0 59 6' fill='none' xmlns='http://www.w3.org/2000/svg'>
+					<path d="M56.495 3.04001C56.295 2.63001 56.255 2.60001 55.845 2.45001C55.145 2.20001 54.435 1.97001 53.745 1.70001C53.345 1.55001 52.995 1.58001 52.635 1.75001C52.505 1.81001 52.385 1.88001 52.335 1.90001C51.855 1.84001 51.455 1.77001 51.055 1.76001C49.465 1.72001 47.985 2.05001 46.605 2.76001C45.635 3.26001 44.555 3.49001 43.425 3.52001C42.445 3.54001 41.515 3.34001 40.635 2.98001C39.585 2.55001 38.665 2.30001 37.735 1.72001C36.885 1.20001 36.025 0.700009 35.055 0.35001C33.825 -0.0899905 32.565 -0.12999 31.335 0.31001C30.525 0.60001 29.855 0.75001 29.185 1.23001C28.785 1.52001 28.435 1.86001 28.025 2.13001C27.975 2.16001 27.925 2.20001 27.875 2.23001C27.445 2.52001 27.005 2.82001 26.525 3.03001C25.065 3.66001 24.165 3.62001 22.885 2.72001C22.845 2.69001 22.805 2.66001 22.755 2.63001C22.375 2.35001 21.995 2.06001 21.605 1.79001C20.245 0.89001 18.065 0.65001 16.475 1.85001C15.985 2.22001 15.475 2.57001 14.965 2.92001C14.155 3.46001 13.235 3.55001 12.275 3.32001C11.615 3.17001 10.975 2.95001 10.325 2.77001C9.47502 2.53001 8.61502 2.50001 7.76502 2.74001C7.27502 2.88001 6.80502 3.08001 6.35502 3.30001C5.43502 3.75001 4.50502 3.82001 3.53502 3.46001C3.43502 3.42001 3.32502 3.39001 3.22502 3.37001C2.83502 3.27001 2.45502 3.14001 2.05502 3.07001C1.69502 3.00001 1.32502 2.98001 0.89502 3.21001C2.02502 3.55001 3.09502 3.87001 4.15502 4.18001C4.91502 4.40001 5.68502 4.39001 6.43502 4.12001C6.65502 4.04001 6.88502 3.97001 7.10502 3.89001C7.84502 3.61001 8.60502 3.55001 9.37502 3.73001C9.67502 3.80001 9.97502 3.88001 10.275 3.97001C10.935 4.18001 11.585 4.41001 12.255 4.60001C13.305 4.91001 14.335 4.82001 15.315 4.36001C15.735 4.16001 16.135 3.92001 16.555 3.71001C17.095 3.43001 17.625 3.12001 18.195 2.91001C19.295 2.51001 20.335 2.60001 21.205 3.38001C21.385 3.54001 21.565 3.71001 21.745 3.87001C21.975 4.08001 22.205 4.29001 22.445 4.49001C22.835 4.83001 23.305 5.03001 23.845 5.15001C24.905 5.38001 25.905 5.17001 26.875 4.82001C27.515 4.59001 28.105 4.36001 28.655 4.10001C29.205 3.84001 29.735 3.54001 30.235 3.14001C30.845 2.66001 31.545 2.36001 32.305 2.15001C32.815 2.01001 33.325 2.02001 33.845 2.10001C34.685 2.22001 35.425 2.55001 36.125 2.95001C36.965 3.43001 37.765 3.60001 38.605 4.08001C39.865 4.81001 41.245 5.23001 42.775 5.20001C43.855 5.18001 44.895 4.96001 45.915 4.65001C47.175 4.27001 48.425 3.87001 49.675 3.49001C50.255 3.31001 50.845 3.17001 51.465 3.24001C51.735 3.27001 52.005 3.28001 52.175 3.54001C52.465 3.99001 52.935 4.07001 53.465 3.98001C54.225 3.86001 54.985 3.73001 55.745 3.61001C56.035 3.56001 56.325 3.51001 56.435 3.23001C56.995 3.20001 57.485 3.34001 57.975 3.50001C58.015 3.51001 58.065 3.48001 58.125 3.47001C58.025 3.40001 57.945 3.34001 57.855 3.27001C58.005 3.23001 58.125 3.20001 58.325 3.15001C57.645 3.11001 57.065 3.07001 56.505 3.04001H56.495Z" fill="#CB9700"/>
+				</svg>
+	{% endfor %}
+{% endcapture %}
+
+<section class="product-marquee" data-section-type='product-marquee' data-section-id='{{ section.id }}' style="background-color: {{ section.settings.background_color }};">
+	<div class='marquee-wrapper'>
+  <div class='iso-marquee' style='--tw:45ch; --ad:40s;'>
+    <span class='wrapper'
+      ><span class='inner-wrapper'>
+        {{- callouts }}
+        {{ callouts }}
+        {{ callouts }}
+        {{ callouts }}
+        {{ callouts -}}
+      </span></span
+    >
+  </div>
+</section>
+
+<script>
+	let root = document.documentElement;
+	document.addEventListener("DOMContentLoaded", (event) => {
+	root.style.setProperty('--tw', document.querySelector('.iso-marquee .inner-wrapper').clientWidth + "px");
+	//console.log(`Marquee: ${document.querySelector('.iso-marquee .inner-wrapper').clientWidth + "px"}`);
+	});
+	</script>
+	<style>
+<style>
+  [data-section-type="product-marquee"] {
+  	padding-top: 60px !important;
+  }
+
+  @media screen and (max-width: 989px) {
+  	:root {
+  		--ad:10s;
+  	}
+  }
+
+	section.product-marquee {
+		position: relative;
+		padding: 3px 0;
+		border-top: 3px solid var(--color-black);
+		border-bottom: 3px solid var(--color-black);
+	}
+
+  .iso-marquee {
+  	padding: 20px 0 15px;
+  	font-size: 20px;
+  	overflow: hidden;
+  	background-color: {{ section.settings.background_color }};
+		border-top: 3px dotted var(--color-gold);
+		border-bottom: 3px dotted var(--color-gold);
+  }
+
+	.marquee-wrapper {
+		padding: 4px 0;
+		border-top: 4px solid var(--color-black);
+		border-bottom: 4px solid var(--color-black);
+	}
+
+  .iso-marquee .wrapper svg {
+  	height: 20px;
+  	min-width: 80px;
+  }
+
+  .iso-marquee .wrapper, .iso-marquee .inner-wrapper {
+  	display: inline-flex;
+  	align-items: center;
+  	white-space: nowrap;
+  	color: {{ section.settings.text_color }};
+  	width: var(--tw);
+  	will-change: transform;
+  	animation: iso-marquee var(--ad) linear infinite;
+  	animation-play-state: play;
+  }
+
+  @keyframes iso-marquee {
+  	0% {
+  		transform: translateX(-100%);
+  	}
+
+  	100% {
+  		transform: translateX(0);
+  	}
+  }
+
+  /* * on MacOs: System Preferences > * Accessibility > * Display > Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+  	.iso-marquee .wrapper {
+  		animation: none;
+  		text-shadow: none;
+  		width: auto;
+  		display: block;
+  		line-height: 1.5;
+  		text-align: center;
+  		white-space: normal;
+  	}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Marquee",
+  "class": "shopify-section--marquee",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#FBF7F4",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#000000",
+      "label": "Text Color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Marquee",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

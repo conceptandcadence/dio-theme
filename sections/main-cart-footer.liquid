@@ -18,37 +18,105 @@
 {%- endstyle -%}
 
 <div
-  class="gradient color-{{ section.settings.color_scheme }}{% if cart == empty %} is-empty{% endif %}"
-  id="main-cart-footer"
-  data-id="{{ section.id }}"
+  class='gradient color-{{ section.settings.color_scheme }}{% if cart == empty %} is-empty{% endif %}'
+  id='main-cart-footer'
+  data-id='{{ section.id }}'
 >
-  <div class="page-width">
-    <div class="cart__footer isolate section-{{ section.id }}-padding">
+  <div class='page-width'>
+    <div class='cart__footer isolate section-{{ section.id }}-padding'>
       {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
+        <details id='Details-CartDrawer'>
+          <summary class='tw-border-b-2 tw-border-dotted tw-border-gold tw-pb-4'>
+            <span class='summary__title h5'>
+              {{ 'sections.cart.note' | t }}
+              {% render 'icon-caret' %}
+            </span>
+          </summary>
+
+          <cart-note class='cart__notes cart__note tw-w-full tw-flex tw-flex-wrap tw-justify-between'>
+            <div class='tw-flex half tw-flex-col tw-w-[calc(50%-4px)]'>
+              <label
+                class='tw-text-[12px] tw-tracking-wider tw-lowercase tw-font-subheading tw-flex tw-mb-4 tw-mt-6'
+                for='attributes[To]'
+                >To:</label
+              >
+              <div class='field'>
+                <input
+                  type='text'
+                  id='note_to'
+                  placeholder='Sender Name'
+                  name='attributes[To]'
+                  value='{{ cart.attributes["To"] }}'
+                  class='field__input'
+                >
+              </div>
+            </div>
+            <div class='tw-flex half tw-flex-col tw-w-[calc(50%-4px)]'>
+              <label
+                class='tw-text-[12px] tw-tracking-wider tw-lowercase tw-font-subheading tw-flex tw-mb-4 tw-mt-6'
+                for='attributes[From]'
+                >From:</label
+              >
+              <div class='field'>
+                <input
+                  type='text'
+                  id='note_from'
+                  placeholder='Recipient Name'
+                  name='attributes[From]'
+                  value='{{ cart.attributes["From"] }}'
+                  class='field__input'
+                >
+              </div>
+            </div>
+            <div class='tw-flex tw-flex-col tw-w-full'>
+              <label
+                class='tw-relative tw-text-[12px] tw-tracking-wider tw-lowercase tw-font-subheading tw-flex tw-mb-4 tw-mt-6'
+                for='attributes[From]'
+              >
+                <span>{{- 'general.cart.note' | t }}:</span>
+                <div class='cart-note-charcount'>
+                  <span class='current'>0</span>
+                  <span class='max'>200</span>
+                </div>
+              </label>
+
+              <div class='field tw-w-full'>
+                <textarea
+                  class='textarea field__input tw-text-base tw-w-full'
+                  id='note_msg'
+                  name='note'
+                  rows='2'
+                  maxlength='200'
+                  name='attributes[Message]'
+                >{{ cart.attributes["Message"] }}</textarea>
+              </div>
+            </div>
+            <div class='tw-hidden'>
+              <div class='control tw-w-full'>
+                <textarea
+                  class='textarea field__input'
+                  id='note'
+                  name='note'
+                  rows='2'
+                >{{ cart.note | default: '' }}</textarea>
+              </div>
+            </div>
+          </cart-note>
+        </details>
       {%- endif -%}
 
-      <div class="cart__blocks">
+      <div class='cart__blocks'>
         {% for block in section.blocks %}
           {%- case block.type -%}
             {%- when '@app' -%}
               {% render block %}
             {%- when 'subtotal' -%}
-              <div class="js-contents" {{ block.shopify_attributes }}>
+              <div class='js-contents' {{ block.shopify_attributes }}>
                 <div>
                   {%- if cart.cart_level_discount_applications.size > 0 -%}
-                    <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                    <ul class='discounts list-unstyled' role='list' aria-label='{{ 'customer.order.discount' | t }}'>
                       {%- for discount in cart.cart_level_discount_applications -%}
-                        <li class="discounts__discount discounts__discount--position">
+                        <li class='discounts__discount discounts__discount--position'>
                           {%- render 'icon-discount' -%}
                           {{ discount.title | escape }}
                           (-{{ discount.total_allocated_amount | money }})
@@ -58,12 +126,12 @@
                   {%- endif -%}
                 </div>
 
-                <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                <div class='totals'>
+                  <h2 class='totals__total'>{{ 'sections.cart.estimated_total' | t }}</h2>
+                  <p class='totals__total-value'>{{ cart.total_price | money_with_currency }}</p>
                 </div>
 
-                <small class="tax-note caption-large rte">
+                <small class='tax-note caption-large rte'>
                   {%- if cart.duties_included and cart.taxes_included -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
@@ -104,30 +172,36 @@
                 </small>
               </div>
             {%- else -%}
-              <div class="cart__ctas" {{ block.shopify_attributes }}>
+              <div class='cart__ctas' {{ block.shopify_attributes }}>
                 <button
-                  type="submit"
-                  id="checkout"
-                  class="cart__checkout-button button"
-                  name="checkout"
+                  type='submit'
+                  id='checkout'
+                  name='checkout'
+                  form='cart'
                   {% if cart == empty %}
                     disabled
                   {% endif %}
-                  form="cart"
+                  class='button button--primary cart__checkout-button tw-w-full tw-relative'
+                  href='/collections/shop-canned-cocktails'
                 >
-                  {{ 'sections.cart.checkout' | t }}
+                  <div class='button-inner'>
+                    <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                      {{ 'sections.cart.checkout' | t }}
+                    </span>
+                  </div>
                 </button>
               </div>
-
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  {{ content_for_additional_checkout_buttons }}
-                </div>
-              {%- endif -%}
+              {% comment %}
+                {%- if additional_checkout_buttons -%}
+                	<div class='cart__dynamic-checkout-buttons additional-checkout-buttons'>
+                		{{ content_for_additional_checkout_buttons }}
+                	</div>
+                {%- endif -%}
+              {% endcomment %}
           {%- endcase -%}
         {% endfor %}
 
-        <div id="cart-errors"></div>
+        <div id='cart-errors'></div>
       </div>
     </div>
   </div>

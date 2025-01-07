@@ -1,0 +1,757 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+  - image_shape: {String} Image mask to apply to the product image card. Values are "arch", "blob", "chevronleft", "chevronright", "diamond", "parallelogram", and "round". (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - show_vendor: {Boolean} Show the product vendor. Default: false
+  - show_rating: {Boolean} Show the product rating. Default: false
+  - extend_height: {Boolean} Card height extends to available container space. Default: true (optional)
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+  - skip_styles: {Boolean} Don't include component styles. Useful when rendering multiple product cards in a loop. Default: false (optional)
+  - quick_add: {Boolean} Show the quick add button.
+  - section_id: {String} The ID of the section that contains this card.
+  - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
+  - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
+  - placeholder_image: {String} The placeholder image to use when no product exists. Default: 'product-apparel-2' (optional)
+
+  Usage:
+  {% render 'card-product', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+{%- unless skip_styles -%}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+  {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
+
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
+  {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+{%- if card_product and card_product != empty -%}
+  {%- assign primary_image = card_product.featured_media -%}
+
+  {%- if card_product.metafields.media.capsule != blank -%}
+    {%- assign primary_image = card_product.metafields.media.capsule.value -%}
+  {%- endif -%}
+
+  {%- liquid
+    assign ratio = 1
+    if primary_image and media_aspect_ratio == 'portrait'
+      assign ratio = 0.8
+    elsif primary_image and media_aspect_ratio == 'adapt'
+      assign ratio = primary_image.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+  -%}
+
+  {% if card_product.metafields.flavor.colors != blank %}
+    {% assign color_scheme = card_product.metafields.flavor.colors.value %}
+    {% assign color_border = color_scheme.border %}
+    {% assign color_inner = color_scheme.inner %}
+    {% assign color_outer = color_scheme.outer %}
+    {% assign color_accent = color_scheme.accent %}
+  {% endif %}
+  <div
+    class='card-wrapper product-card-wrapper'
+    style='{% if color_border %}--can-color-1: {{color_border}};{% endif %}{% if color_inner %}--can-color-3: {{color_inner}};{% endif %}{% if color_outer %}--can-color-2: {{color_outer}};{% endif %}{% if color_accent %}--can-color-0: {{color_accent}};{% endif %}'
+  >
+    <div
+      class='
+        card can card--{{ settings.card_style }} tw-pt-[60px] tw-pb-[60px]
+        {% if primary_image %} card--media{% else %} card--text{% endif %}
+        {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
+        {% if image_shape and image_shape != 'default' %} card--shape{% endif %}
+        {% if extend_height %} card--extend-height{% endif %}
+        {% if primary_image == nil and settings.card_style == 'card' %} ratio{% endif %}
+        {% if horizontal_class %} card--horizontal{% endif %}
+      '
+      style='--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;'
+    >
+      <div
+        class='card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if primary_image or settings.card_style == 'standard' %} ratio{% endif %}'
+        style='--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;'
+      >
+        <div class='can-branding-underlay-wrapper'>
+          <svg
+            class='can-branding-underlay'
+            viewBox='0 0 362 568'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path class="can-branding-underlay-group-1" fill-rule="evenodd" clip-rule="evenodd" d="M197.17 545.634L181.828 566.958L166.392 545.723L147.191 563.878L136.11 540.102L113.718 554.339L107.495 528.915L82.7265 538.684L81.6096 512.568L55.3877 517.497L59.4301 491.648L32.7118 491.506L41.8424 466.933L15.6738 461.632L29.6446 439.328L5.10704 428.974L23.3861 409.897L1.45477 394.916L22.2337 381.069L1.36612 367.311L22.1805 353.447L1.2952 339.689L22.1096 325.824L1.22429 312.049L22.0387 298.202L1.33066 284.444L9.59258 278.824L21.9855 270.562L1.10018 256.804L21.9146 242.939L1.02926 229.163L21.8436 215.299L0.976074 201.523L21.7904 187.641L9.71669 179.663L1.43704 173.883L9.46848 167.979L22.7833 158.76L4.39786 139.771L28.8822 129.293L14.805 107.061L40.9382 101.618L31.6835 77.0801L58.4018 76.8142L54.2353 51.0001L80.4926 55.8048L81.4855 29.6893L106.307 39.3519L112.406 13.9101L134.869 28.0405L145.826 4.21212L165.115 22.2784L180.469 0.878983L195.947 22.172L215.148 4.01709L226.229 27.7923L248.621 13.5555L254.844 38.9796L279.612 29.2106L280.729 55.3261L306.951 50.3796L302.909 76.2291L329.627 76.371L320.496 100.944L346.665 106.245L332.694 128.549L357.232 138.903L338.953 157.98L351.665 166.685L361.274 172.979L352.409 178.617L340.087 186.825L360.955 200.583L340.14 214.448L361.008 228.206L340.194 242.07L361.061 255.828L340.247 269.693L361.203 283.451L340.318 297.315L361.185 311.073L340.371 324.938L361.256 338.714L340.442 352.578L361.309 366.354L340.495 380.236L361.345 393.994L339.502 409.117L357.888 428.105L333.403 438.584L347.48 460.816L321.347 466.259L330.602 490.797L303.884 491.063L308.05 516.894L281.793 512.09L280.8 538.205L255.979 528.561L249.88 554.002L227.417 539.872L216.46 563.7L197.17 545.634ZM12.9096 289.511L11.826 288.668L11.0179 288.265L12.9096 289.511ZM10.8788 280.772L10.9395 280.743L11.0427 280.662L10.8788 280.772Z" fill="var(--can-color-2)"/>
+            <path class="can-branding-underlay-group-1" d="M181.828 566.958L181.799 566.998L181.87 567.016L181.828 566.958Z" fill="var(--can-color-2)"/>
+            <path class="can-branding-underlay-group-2" d="M167.66 531.947L150.107 548.559L139.984 526.823L119.56 539.819L113.886 516.593L91.2989 525.511L90.2706 501.665L66.389 506.168L70.0767 482.624L45.8051 482.482L54.1202 460.16L30.3982 455.338L43.0571 435.126L20.8598 425.765L37.4191 408.479L17.7749 395.022L38.7665 381.034L17.899 367.276L38.6956 353.411L17.8281 339.636L38.6247 325.771L17.7571 312.013L38.5715 298.149L17.6862 284.391L38.5006 270.526L17.6153 256.768L38.4297 242.886L17.5444 229.128L38.3588 215.263L17.4735 201.488L38.2701 187.606L17.2075 173.688L36.7986 160.143L20.1506 142.945L42.3124 133.46L29.5649 113.301L53.2338 108.373L44.83 86.0867L69.1016 85.8385L65.2898 62.3115L89.1891 66.673L90.111 42.8446L112.734 51.6384L118.283 28.3951L138.778 41.2844L148.795 19.5127L166.436 36.0188L180.496 16.4632L194.662 35.9479L212.214 19.3531L222.337 41.0717L242.762 28.0937L248.435 51.3016L271.022 42.3836L272.051 66.2298L295.932 61.7265L292.244 85.2889L316.516 85.413L308.219 107.752L331.923 112.557L319.264 132.768L341.461 142.147L324.902 159.416L344.546 172.872L323.555 186.861L344.422 200.619L323.626 214.501L344.493 228.259L323.696 242.124L344.564 255.882L323.75 269.746L344.635 283.504L323.821 297.369L344.706 311.144L323.909 325.009L344.777 338.767L323.962 352.631L344.848 366.425L324.051 380.307L345.114 394.207L325.523 407.77L342.171 424.95L320.009 434.435L332.774 454.593L309.087 459.522L317.491 481.826L293.237 482.056L297.031 505.601L273.132 501.222L272.228 525.068L249.605 516.256L244.038 539.5L223.543 526.61L213.526 548.4L195.885 531.876L181.825 551.432L167.66 531.947Z" fill="var(--can-color-3)"/>
+            <path class="can-branding-underlay-group-3" d="M97.9024 495.2C97.3705 494.74 96.8564 494.261 96.3423 493.8L92.7612 497.682L94.4809 497.434L94.4099 499.26H94.4277V499.278L97.9201 495.2H97.9024Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M91.465 489.297L81.9272 499.065L85.6147 498.64L92.8832 490.644C92.4046 490.201 91.9436 489.758 91.465 489.297Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M86.733 484.676L72.9395 497.973L72.8154 499.799L74.6593 499.675L87.9741 485.899C87.5663 485.491 87.1408 485.083 86.7153 484.658L86.733 484.676Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M83.3471 481.176C82.9039 480.698 82.4607 480.219 82.0175 479.758L73.9689 487.062C73.8271 488.285 73.6498 489.544 73.5435 490.749L83.3471 481.194V481.176Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M75.3877 479.157L75.0155 480.947H75.0332V480.965L79.1461 477.526C78.7029 476.976 78.2774 476.427 77.8342 475.877L73.6504 479.121L75.3877 479.157Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M73.7715 470.637L62.7446 478.668L66.4498 478.863L74.9593 472.18C74.5693 471.666 74.1793 471.134 73.7892 470.62L73.7715 470.637Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M69.8713 465.253L54.0569 476.068L53.6313 477.841L55.4752 478.036L70.8996 466.689C70.5627 466.211 70.2082 465.732 69.8713 465.253Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M55.8667 469.05L67.1418 461.25C66.7695 460.718 66.4149 460.168 66.0604 459.619L56.8949 465.469C56.5404 466.639 56.1681 467.862 55.8667 469.032V469.05Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M59.8909 457.385L59.1817 459.069H59.1995V459.087L63.8974 456.499C63.5783 455.878 63.2415 455.258 62.9224 454.637L58.189 457.013L59.8731 457.385H59.8909Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M59.9616 448.699L47.5864 454.461L51.1855 455.366L60.8126 450.455C60.5289 449.87 60.2452 449.284 59.9616 448.699Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M57.1598 442.695L39.5724 450.266L38.8101 451.932L40.583 452.482L57.9044 444.309C57.6562 443.777 57.408 443.245 57.1775 442.695H57.1598Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M42.6754 443.713L55.2269 438.235C54.9787 437.632 54.7306 437.03 54.4824 436.427L44.3596 440.416C43.7923 441.497 43.1896 442.614 42.6577 443.713H42.6754Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M49.4484 433.819L48.4734 435.361H48.5088L48.4911 435.379L53.5613 433.624C53.3486 432.95 53.1359 432.294 52.9231 431.62L47.8706 433.163L49.4839 433.801L49.4484 433.819Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M51.5214 427.138C51.3264 426.517 51.1491 425.897 50.9718 425.259L37.7988 428.858L41.1852 430.365L51.5037 427.138H51.5214Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M49.2358 418.873L30.6201 423.394L29.5918 424.901L31.2406 425.735L49.679 420.575C49.5371 420.008 49.3776 419.441 49.218 418.873H49.2358Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M47.6576 412.243L37.0199 414.477C36.2753 415.452 35.4952 416.463 34.8037 417.438L48.1008 414.14C47.959 413.502 47.8171 412.864 47.6753 412.243H47.6576Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M47.1777 408.891C47.1068 408.2 47.0536 407.491 47.0004 406.799L41.292 407.207L42.7102 408.2L41.4161 409.476H41.4515L41.4161 409.512L47.1954 408.909L47.1777 408.891Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.7525 379.641L41.0264 380.049L42.4446 381.041L41.1505 382.318H41.1859L41.1505 382.353L46.9298 381.751C46.8589 381.059 46.8057 380.35 46.7525 379.659V379.641Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M35.4247 403.017L46.2042 402.166C46.1687 401.51 46.1333 400.872 46.0978 400.216L32.4639 400.801L35.4424 403.017H35.4247Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.8133 393.586L26.6658 393.834L25.3184 395.075L26.7544 396.263L45.8842 395.359C45.8665 394.773 45.831 394.188 45.831 393.603L45.8133 393.586Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.76 386.758L34.8919 386.563C33.9522 387.361 32.9594 388.158 32.0552 388.956L45.76 388.708C45.76 388.052 45.76 387.414 45.76 386.758Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M310.479 431.62C310.266 432.294 310.054 432.95 309.841 433.624L314.911 435.379V435.343L313.936 433.801L315.549 433.163L310.497 431.62H310.479Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M311.861 427.138L322.18 430.365L325.566 428.858L312.393 425.259C312.216 425.879 312.039 426.517 311.844 427.138H311.861Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M314.166 418.873C314.024 419.441 313.865 420.008 313.705 420.575L332.143 425.735L333.792 424.901L332.764 423.394L314.148 418.873H314.166Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M326.381 414.477L315.743 412.243C315.602 412.882 315.46 413.52 315.318 414.14L328.615 417.438C327.924 416.445 327.143 415.452 326.399 414.477H326.381Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.4 406.805C316.347 407.497 316.276 408.206 316.223 408.897L322.003 409.5L321.967 409.465H322.003L320.708 408.188L322.127 407.195L316.418 406.788L316.4 406.805Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M322.199 382.318H322.235L320.941 381.041L322.359 380.049L316.65 379.641C316.597 380.332 316.526 381.041 316.473 381.733L322.253 382.336L322.217 382.3L322.199 382.318Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M317.303 400.216C317.267 400.872 317.232 401.51 317.196 402.166L327.976 403.017L330.954 400.801L317.32 400.216H317.303Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M317.572 393.592C317.572 394.177 317.537 394.762 317.519 395.347L336.649 396.251L338.085 395.063L336.737 393.822L317.59 393.574L317.572 393.592Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M331.346 388.956C330.442 388.141 329.467 387.343 328.51 386.563L317.642 386.758C317.642 387.414 317.642 388.052 317.642 388.708L331.346 388.956Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M117.991 508.556L115.296 513.112L116.927 512.509L117.246 514.299L119.799 509.584C119.178 509.247 118.576 508.892 117.973 508.538L117.991 508.556Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M105.012 516.725L108.522 515.537L113.947 506.177C113.38 505.84 112.83 505.503 112.281 505.166L105.012 516.725Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M106.677 501.642L96.0044 517.545L96.2703 519.353L98.061 518.839L108.167 502.581C107.67 502.262 107.174 501.961 106.677 501.624V501.642Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M101.041 497.823L94.6938 506.652C94.8179 507.875 94.9066 509.133 95.0661 510.339L102.636 498.922C102.104 498.55 101.572 498.177 101.023 497.805L101.041 497.823Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M267.927 493.283C267.395 493.744 266.863 494.205 266.331 494.648L269.717 498.814V498.778L269.735 498.796V496.97L271.419 497.272L267.927 493.3V493.283Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M271.454 490.204L278.528 498.377L282.197 498.891L272.89 488.892C272.412 489.336 271.933 489.761 271.437 490.204H271.454Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M277.75 484.388C277.325 484.796 276.899 485.203 276.474 485.593L289.452 499.671L291.295 499.83L291.225 498.004L277.768 484.37L277.75 484.388Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M290.462 487.078L282.573 479.579C282.112 480.04 281.669 480.519 281.208 480.98L290.781 490.783C290.71 489.578 290.568 488.319 290.462 487.096V487.078Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M286.224 475.539C285.781 476.088 285.356 476.638 284.913 477.188L289.026 480.627V480.591V480.609L288.653 478.819L290.391 478.783L286.207 475.539H286.224Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M289.097 471.839L297.606 478.523L301.311 478.328L290.284 470.297C289.894 470.811 289.504 471.343 289.114 471.857L289.097 471.839Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M294.167 464.923C293.831 465.402 293.476 465.88 293.139 466.359L308.564 477.706L310.407 477.511L309.982 475.738L294.167 464.923Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M307.145 465.135L297.98 459.284C297.625 459.834 297.271 460.366 296.898 460.915L308.156 468.716C307.854 467.546 307.482 466.34 307.128 465.152L307.145 465.135Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M301.171 454.478C300.851 455.098 300.515 455.719 300.178 456.339L304.858 458.963V458.928L304.167 457.244L305.868 456.889L301.171 454.478Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M303.315 450.307L312.907 455.307L316.506 454.42L304.184 448.552C303.9 449.137 303.616 449.722 303.315 450.307Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M307.021 442.583C306.773 443.114 306.525 443.646 306.277 444.178L323.51 452.511L325.283 451.979L324.538 450.312L307.004 442.583H307.021Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M319.839 440.419L309.752 436.341C309.503 436.944 309.255 437.547 308.989 438.132L321.488 443.734C320.973 442.635 320.388 441.518 319.821 440.419H319.839Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M243.888 509.176L246.441 513.891V513.856L246.458 513.874L246.777 512.083L248.408 512.686L245.731 508.13C245.129 508.484 244.508 508.821 243.905 509.176H243.888Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M249.755 505.749L255.18 515.11L258.69 516.297L251.422 504.739C250.872 505.076 250.323 505.412 249.755 505.749Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M255.536 502.175L265.642 518.432L267.432 518.946L267.698 517.138L257.025 501.235C256.529 501.554 256.033 501.873 255.536 502.192V502.175Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M261.065 498.504L268.635 509.921C268.795 508.715 268.884 507.457 269.008 506.233L262.679 497.405C262.147 497.777 261.615 498.149 261.065 498.522V498.504Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M140.79 523.232L142.262 522.327L142.918 524.029L144.513 518.906C143.839 518.693 143.183 518.463 142.528 518.232L140.772 523.214L140.79 523.232Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M131.375 528.741L134.602 526.897L138.13 516.686C137.527 516.473 136.907 516.242 136.304 516.012L131.375 528.741Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M130.117 513.62L122.689 531.279L123.292 532.998L124.941 532.165L131.749 514.276C131.199 514.064 130.649 513.851 130.117 513.62Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M123.858 510.964L119.319 520.857C119.674 522.045 120.011 523.269 120.383 524.403L125.631 511.744C125.028 511.479 124.443 511.23 123.84 510.964H123.858Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M167.226 527.893L168.484 526.688L169.495 528.213V528.177L169.513 528.213L169.991 522.876C169.3 522.805 168.591 522.717 167.899 522.646L167.226 527.893Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M159.193 535.271L161.959 532.789L163.253 522.062C162.615 521.974 161.959 521.885 161.32 521.779L159.193 535.271Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M151.234 539.581L152.191 541.141L153.627 539.971L156.499 521.036C155.914 520.947 155.329 520.841 154.762 520.752L151.234 539.581Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M145.737 530.093C146.322 531.174 146.907 532.291 147.528 533.337L149.992 519.863C149.354 519.739 148.716 519.597 148.078 519.473L145.737 530.093Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M219.97 518.639L221.566 523.763V523.727L221.583 523.763L222.239 522.061L223.711 522.965L221.956 517.983C221.282 518.214 220.626 518.427 219.97 518.657V518.639Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M226.389 516.433L229.917 526.644L233.143 528.488L228.215 515.759C227.612 515.99 226.991 516.22 226.389 516.433Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M232.752 513.992L239.56 531.881L241.209 532.715L241.812 530.995L234.384 513.336C233.834 513.549 233.284 513.762 232.752 513.992Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M238.869 511.457L244.117 524.116C244.49 522.963 244.844 521.74 245.181 520.57L240.642 510.677C240.039 510.943 239.454 511.209 238.852 511.457H238.869Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M200.91 522.345L202.4 533.053L205.201 535.482L202.825 522.043C202.187 522.15 201.549 522.256 200.893 522.362L200.91 522.345Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M207.63 521.192L210.857 540.073L212.328 541.208L213.25 539.63L209.367 520.873C208.782 520.979 208.215 521.085 207.63 521.192Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M214.119 519.9L216.832 533.339C217.435 532.275 218.002 531.141 218.569 530.059L216.034 519.492C215.396 519.634 214.757 519.776 214.119 519.918V519.9Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M196.496 522.91C195.805 522.963 195.096 522.999 194.404 523.052L194.688 528.335L195.698 526.935L196.957 528.246V528.211L196.993 528.246L196.514 522.91H196.496Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M187.773 523.393L188.093 537.045L190.362 534.12L189.724 523.323C189.068 523.358 188.429 523.376 187.773 523.393Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M181.142 523.552L181.035 542.7L182.258 544.065L183.464 542.664L182.914 523.517C182.329 523.517 181.744 523.535 181.159 523.552H181.142Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M173.927 534.35C174.689 535.308 175.487 536.3 176.267 537.222V523.517C175.629 523.517 174.973 523.482 174.317 523.482L173.909 534.35H173.927Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M94.8003 75.2053C95.3144 74.7444 95.8463 74.2657 96.3604 73.8048L92.8857 69.7274V69.7628H92.868L92.9389 71.5711L91.2192 71.3229L94.8003 75.2053Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M91.3412 78.3582L84.0727 70.3628L80.3853 69.9373L89.923 79.7055C90.4016 79.2623 90.8626 78.8014 91.3412 78.3582Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M85.1909 84.3472C85.5987 83.9217 86.0242 83.5139 86.4497 83.1062L73.1349 69.3304L71.291 69.2063L71.4151 71.0324L85.1909 84.3295V84.3472Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M81.8207 87.8244L72.0171 78.2513C72.1235 79.4568 72.283 80.7155 72.4426 81.9387L80.4911 89.2427C80.9343 88.764 81.3775 88.2854 81.8207 87.8244Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M77.602 91.4821L73.4891 88.0429V88.0783V88.0606L73.8614 89.8511L72.124 89.8866L76.3079 93.1308C76.7511 92.5813 77.1765 92.0317 77.6197 91.4821H77.602Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M73.3997 96.8223L64.8902 90.1389L61.1851 90.3339L72.2119 98.3647C72.602 97.8506 72.992 97.3187 73.382 96.8046L73.3997 96.8223Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M68.3469 103.758C68.6837 103.279 69.0383 102.8 69.3752 102.322L53.9508 90.9749L52.1069 91.1699L52.5324 92.9429L68.3469 103.758Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M65.5986 107.762L54.3413 99.9616C54.6427 101.132 55.015 102.337 55.3695 103.525L64.535 109.375C64.8895 108.826 65.2441 108.294 65.6164 107.744L65.5986 107.762Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M61.3802 114.359C61.6993 113.738 62.0184 113.118 62.3553 112.497L57.6573 109.909V109.944L58.3665 111.628L56.6646 112.001L61.398 114.376L61.3802 114.359Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M59.2691 118.537L49.642 113.626L46.043 114.531L58.4181 120.293C58.7018 119.708 58.9855 119.122 59.2691 118.537Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M55.617 126.31C55.8474 125.778 56.1134 125.246 56.3439 124.697L39.0224 116.523L37.2495 117.073L38.0119 118.739L55.617 126.31Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M53.7024 130.778L41.1509 125.3C41.6827 126.399 42.2677 127.516 42.8528 128.597L52.9755 132.586C53.2237 131.984 53.4719 131.381 53.7201 130.778H53.7024Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M51.3627 137.384C51.5755 136.71 51.7882 136.054 52.0009 135.381L46.9307 133.626V133.661L47.9057 135.203L46.2925 135.842L51.345 137.384H51.3627Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M49.9793 141.865L39.6607 138.638L36.2744 140.145L49.4474 143.744C49.6247 143.124 49.802 142.485 49.997 141.865H49.9793Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M47.6917 150.135C47.8335 149.567 47.9931 149 48.1526 148.433L29.7142 143.273L28.0654 144.107L29.0937 145.614L47.7094 150.135H47.6917Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.5402 154.85L33.2432 151.552C33.9346 152.545 34.7147 153.538 35.4593 154.531L46.097 156.765C46.2388 156.126 46.3807 155.488 46.5225 154.868L46.5402 154.85Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.4576 162.666C45.5108 161.974 45.5817 161.265 45.6349 160.574L39.8555 159.971L39.891 160.007H39.8555L41.1497 161.283L39.7314 162.276L45.4576 162.684V162.666Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M44.554 169.266C44.5895 168.611 44.6249 167.972 44.6604 167.316L33.8809 166.465L30.9023 168.681L44.5363 169.266H44.554Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M44.2715 175.875C44.2715 175.29 44.3069 174.705 44.3247 174.12L25.1949 173.216L23.7588 174.404L25.1062 175.645L44.2537 175.893L44.2715 175.875Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M30.5138 180.492C31.418 181.289 32.3931 182.105 33.3328 182.885L44.201 182.69C44.201 182.034 44.201 181.396 44.201 180.74L30.4961 180.492H30.5138Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M41.3636 297.504L40.814 297.45L40.8495 297.486H40.814L40.8495 297.521H40.814L40.8495 297.539H40.814L42.0905 298.798L40.6899 299.791H40.7077L40.6899 299.808L46.3984 300.216C46.3984 300.216 46.3984 300.198 46.3984 300.181L46.948 300.216C47.0011 299.525 47.0721 298.816 47.1252 298.124L41.3459 297.521L41.3636 297.504Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M32.4103 306.231L46.0443 306.816C46.0797 306.16 46.1152 305.522 46.1506 304.866L35.3711 304.014L32.3926 306.231H32.4103Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M25.2814 311.935L26.6288 313.176L45.7764 313.425C45.7764 312.839 45.8118 312.254 45.8295 311.669L26.6997 310.765L25.2637 311.953L25.2814 311.935Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M32.0031 318.033C32.9073 318.849 33.8824 319.646 34.8221 320.427L45.6902 320.232C45.6902 319.576 45.6902 318.937 45.6902 318.281L31.9854 318.033H32.0031Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M41.3812 325.342H41.3458L42.6399 326.618L41.2217 327.611L46.9301 328.019C46.9833 327.328 47.0542 326.618 47.1074 325.927L41.3281 325.324L41.3635 325.36L41.3812 325.342Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.1506 332.658L35.3711 331.807L32.3926 334.023L46.0265 334.608C46.062 333.952 46.0974 333.314 46.1329 332.658H46.1506Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M26.6132 340.969L45.7607 341.217C45.7607 340.632 45.7962 340.047 45.8139 339.462L26.6841 338.557L25.248 339.745L26.5955 340.986L26.6132 340.969Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.7068 348.028C45.7068 347.372 45.7068 346.733 45.7068 346.077L32.002 345.829C32.9062 346.645 33.8813 347.442 34.8209 348.223L45.6891 348.028H45.7068Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.9479 355.274C47.001 354.583 47.072 353.874 47.1251 353.183L41.3458 352.58L41.3812 352.615H41.3458L42.6399 353.892L41.2217 354.884L46.9301 355.292L46.9479 355.274Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.1506 359.929L35.3711 359.078L32.3926 361.294L46.0265 361.879C46.062 361.223 46.0974 360.585 46.1329 359.929H46.1506Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.7764 368.488C45.7764 367.903 45.8118 367.318 45.8295 366.733L26.6997 365.828L25.2637 367.016L26.6111 368.257L45.7586 368.505L45.7764 368.488Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.7068 373.348L32.002 373.1C32.9062 373.916 33.8813 374.714 34.8209 375.494L45.6891 375.299C45.6891 374.643 45.6891 374.004 45.6891 373.348H45.7068Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M118.275 59.4173L115.722 54.7016V54.7371L115.704 54.7194L115.385 56.5099L113.754 55.9071L116.449 60.4633C117.051 60.1087 117.654 59.7719 118.275 59.4173Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M112.405 62.8156L106.98 53.4551L103.47 52.2673L110.739 63.8261C111.288 63.4892 111.838 63.1524 112.405 62.8156Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M106.625 66.416L96.519 50.1583L94.7283 49.6619L94.4624 51.4703L105.135 67.3734C105.632 67.0543 106.128 66.7351 106.625 66.416Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M101.094 70.0655L93.5241 58.6486C93.3646 59.8541 93.276 61.1128 93.1519 62.336L99.4985 71.1646C100.03 70.7923 100.562 70.4201 101.094 70.0478V70.0655Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M141.181 44.5471L141.164 44.5117L140.508 46.2136L139.036 45.3094L140.791 50.291C141.465 50.0606 142.121 49.8478 142.777 49.6174L141.181 44.4939V44.5471Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M136.356 51.8554L132.829 41.644L129.602 39.8003L134.53 52.5291C135.133 52.2986 135.754 52.0682 136.356 51.8554Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M129.994 54.276L123.186 36.3872L121.537 35.5539L120.934 37.2737L128.363 54.9319C128.912 54.7192 129.462 54.5064 129.994 54.276Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M123.877 56.8105L118.629 44.1517C118.256 45.3041 117.902 46.5274 117.565 47.6976L122.104 57.5906C122.706 57.3247 123.292 57.0587 123.894 56.8105H123.877Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M265.979 73.8048C266.511 74.2657 267.025 74.7444 267.539 75.2053L271.12 71.3229L269.401 71.5711L269.472 69.7451H269.454V69.7274L265.961 73.8048H265.979Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M272.413 79.7055L281.951 69.9373L278.264 70.3628L270.995 78.3582C271.474 78.8014 271.935 79.2446 272.413 79.7055Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M277.146 84.3411L290.939 71.0441L291.063 69.2179L289.22 69.342L275.905 83.1178C276.313 83.5256 276.738 83.9511 277.164 84.3589L277.146 84.3411Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M280.516 87.8244C280.959 88.3031 281.402 88.764 281.845 89.2427L289.894 81.9387C290.036 80.7155 290.213 79.4568 290.319 78.2513L280.516 87.8244Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M284.736 91.4821C285.179 92.0317 285.605 92.5813 286.048 93.1308L290.232 89.8866L288.494 89.8511L288.866 88.0606H288.849V88.0429L284.736 91.4821Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M290.108 98.3841L301.135 90.3533L297.429 90.1583L288.92 96.8418C289.31 97.3559 289.7 97.8877 290.09 98.4019L290.108 98.3841Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M293.991 103.758L309.805 92.9429L310.231 91.1699L308.387 90.9749L292.962 102.322C293.299 102.8 293.654 103.279 293.991 103.758Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M308.015 99.9616L296.757 107.762C297.13 108.294 297.484 108.843 297.839 109.393L307.004 103.543C307.359 102.355 307.731 101.149 308.032 99.9793L308.015 99.9616Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M299.982 112.497C300.302 113.118 300.638 113.738 300.957 114.359L305.691 111.983L303.989 111.611L304.698 109.926H304.68V109.909L299.982 112.497Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M303.92 120.312L316.295 114.55L312.696 113.646L303.069 118.557C303.353 119.142 303.636 119.727 303.92 120.312Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M306.72 126.31L324.308 118.739L325.07 117.073L323.297 116.523L305.976 124.697C306.224 125.228 306.472 125.76 306.702 126.31H306.72Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M321.185 125.3L308.633 130.778C308.881 131.381 309.13 131.984 309.378 132.586L319.501 128.597C320.068 127.516 320.671 126.399 321.185 125.3Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M314.43 135.186L315.405 133.643H315.37L315.388 133.626L310.317 135.381C310.53 136.054 310.743 136.71 310.956 137.384L316.008 135.842L314.395 135.203L314.43 135.186Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M312.127 141.184C312.305 141.805 312.5 142.443 312.677 143.064L325.85 139.465L322.464 137.958L312.145 141.184H312.127Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M314.415 149.45L333.031 144.929L334.059 143.422L332.41 142.589L313.972 147.748C314.131 148.315 314.273 148.883 314.433 149.45H314.415Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.993 156.073L326.63 153.839C327.375 152.864 328.155 151.853 328.846 150.86L315.549 154.158C315.691 154.796 315.833 155.434 315.975 156.055L315.993 156.073Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.471 159.888C316.542 160.579 316.595 161.288 316.649 161.98L322.357 161.572L320.939 160.579L322.233 159.303H322.198L322.233 159.267L316.454 159.87L316.471 159.888Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M331.204 167.985L328.226 165.769L317.446 166.62C317.482 167.276 317.517 167.914 317.553 168.57L331.187 167.985H331.204Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M318.067 175.877L337.215 175.629L338.562 174.388L337.126 173.2L317.997 174.105C318.014 174.69 318.05 175.275 318.05 175.86L318.067 175.877Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M318.137 180.74C318.137 181.396 318.137 182.034 318.137 182.69L329.005 182.885C329.945 182.087 330.938 181.289 331.842 180.492L318.137 180.74Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 300.216L321.099 299.808H321.081L321.099 299.791L319.698 298.798L320.975 297.539H320.939L320.975 297.521H320.939L320.975 297.486H320.939L320.975 297.45L315.195 298.071C315.195 298.071 315.195 298.106 315.195 298.124C315.266 298.816 315.319 299.525 315.373 300.216H315.39Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 304.866C316.223 305.522 316.259 306.16 316.294 306.816L329.928 306.231L326.949 304.014L316.17 304.866H316.188Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 310.748L316.506 311.652C316.524 312.237 316.559 312.822 316.559 313.407L335.707 313.159L337.054 311.918L335.618 310.73L335.636 310.748Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 318.281C316.63 318.937 316.63 319.576 316.63 320.232L327.499 320.427C328.438 319.629 329.431 318.831 330.335 318.033L316.63 318.281Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 328.002L321.099 327.594L319.681 326.601L320.975 325.325H320.939L320.975 325.289L315.195 325.892C315.266 326.583 315.319 327.293 315.373 327.984L315.39 328.002Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 332.658C316.223 333.314 316.259 333.952 316.294 334.608L329.928 334.023L326.949 331.807L316.17 332.658H316.188Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 338.54L316.506 339.444C316.524 340.029 316.559 340.614 316.559 341.199L335.707 340.951L337.054 339.71L335.618 338.522L335.636 338.54Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 346.077C316.63 346.733 316.63 347.372 316.63 348.028L327.499 348.223C328.438 347.425 329.431 346.627 330.335 345.829L316.63 346.077Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 355.274L321.099 354.867L319.681 353.874L320.975 352.598H320.939L320.975 352.58L315.195 353.183C315.266 353.874 315.319 354.583 315.373 355.274H315.39Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 189.072L321.099 188.664L319.681 187.671L320.975 186.395H320.939L320.975 186.36L315.195 186.962C315.266 187.654 315.319 188.363 315.373 189.054L315.39 189.072Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 193.712C316.223 194.368 316.259 195.007 316.294 195.663L329.928 195.078L326.949 192.861L316.17 193.712H316.188Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 199.614L316.506 200.518C316.524 201.103 316.559 201.689 316.559 202.274L335.707 202.025L337.054 200.784L335.618 199.597L335.636 199.614Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 207.148C316.63 207.804 316.63 208.442 316.63 209.098L327.499 209.293C328.438 208.495 329.431 207.697 330.335 206.899L316.63 207.148Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 216.874L321.099 216.466L319.681 215.473L320.975 214.197H320.939L320.975 214.179L315.195 214.782C315.266 215.473 315.319 216.182 315.373 216.874H315.39Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 221.512C316.223 222.168 316.259 222.807 316.294 223.463L329.928 222.878L326.949 220.661L316.17 221.512H316.188Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 227.391L316.506 228.295C316.524 228.88 316.559 229.465 316.559 230.05L335.707 229.802L337.054 228.561L335.618 227.373L335.636 227.391Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 234.928C316.63 235.584 316.63 236.222 316.63 236.878L327.499 237.073C328.438 236.276 329.431 235.478 330.335 234.68L316.63 234.928Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 244.182L321.099 243.775L321.063 243.739H321.099L319.681 242.746L320.975 241.452H320.957L320.975 241.434L315.922 241.984L315.195 242.055C315.266 242.764 315.319 243.473 315.373 244.182H315.39Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 248.904C316.223 249.56 316.259 250.234 316.294 250.89L329.928 250.305L326.949 248.053L316.17 248.922L316.188 248.904Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 254.901L316.506 255.823C316.524 256.426 316.559 257.011 316.559 257.613L335.707 257.365L337.054 256.106L335.618 254.901H335.636Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 262.563C316.63 263.219 316.63 263.893 316.63 264.549L327.499 264.744C328.438 263.946 329.431 263.13 330.335 262.297L316.63 262.545V262.563Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M315.39 272.443L321.099 272.036L319.681 271.025L320.975 269.713H320.939L320.975 269.678L315.195 270.298C315.266 271.007 315.319 271.716 315.373 272.426L315.39 272.443Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.188 277.186C316.223 277.842 316.259 278.516 316.294 279.172L329.928 278.587L326.949 276.335L316.17 277.204L316.188 277.186Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M335.636 283.179L316.506 284.101C316.524 284.704 316.559 285.289 316.559 285.892L335.707 285.643L337.054 284.385L335.618 283.179H335.636Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M316.63 290.833C316.63 291.489 316.63 292.163 316.63 292.819L327.499 293.014C328.438 292.216 329.431 291.401 330.335 290.568L316.63 290.816V290.833Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M40.8324 186.393H40.7969L42.0911 187.669L40.6729 188.662L46.3813 189.07C46.4345 188.378 46.5054 187.669 46.5586 186.978L40.7792 186.375L40.8147 186.411L40.8324 186.393Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M31.8419 195.097L45.4759 195.682C45.5114 195.026 45.5468 194.388 45.5823 193.732L34.8028 192.881L31.8242 195.097H31.8419Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M24.716 200.782L26.0634 202.023L45.2109 202.271C45.2109 201.686 45.2464 201.101 45.2641 200.516L26.1343 199.612L24.6982 200.8L24.716 200.782Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.1399 207.148L31.4351 206.899C32.3393 207.715 33.3144 208.513 34.2718 209.293L45.1399 209.098C45.1399 208.442 45.1399 207.804 45.1399 207.148Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M40.7969 214.156L40.8324 214.191H40.7969L42.0911 215.467L40.6729 216.46L46.3813 216.868C46.4345 216.177 46.5054 215.467 46.5586 214.776L40.7792 214.173L40.7969 214.156Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.6003 221.512L34.8208 220.661L31.8423 222.878L45.4762 223.463C45.5117 222.807 45.5471 222.168 45.5826 221.512H45.6003Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M26.0634 229.819L45.2109 230.067C45.2109 229.482 45.2464 228.897 45.2641 228.312L26.1343 227.408L24.6982 228.596L26.0457 229.837L26.0634 229.819Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.1399 234.928L31.4351 234.68C32.3393 235.495 33.3144 236.293 34.2718 237.073L45.1399 236.878C45.1399 236.222 45.1399 235.584 45.1399 234.928Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.8495 241.968L40.7969 241.419H40.8147L40.7969 241.437L42.0911 242.731L40.6729 243.706H40.7083L40.6729 243.741L46.3813 244.149C46.4345 243.44 46.5054 242.731 46.5586 242.022L45.8317 241.951L45.8495 241.968Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.6003 248.91L34.8208 248.041L31.8423 250.293L45.4762 250.878C45.5117 250.222 45.5471 249.566 45.5826 248.892L45.6003 248.91Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M26.0634 257.385L45.2109 257.633C45.2109 257.03 45.2464 256.445 45.2641 255.842L26.1343 254.92L24.6982 256.126L26.0457 257.385H26.0634Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.1575 264.543C45.1575 263.887 45.1575 263.213 45.1575 262.557L31.4526 262.309C32.3568 263.124 33.332 263.94 34.2893 264.755L45.1575 264.56V264.543Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M46.399 272.441C46.4522 271.732 46.5231 271.023 46.5763 270.314L40.7969 269.693L40.8324 269.729H40.7969L42.0911 271.023L40.6729 272.033L46.3813 272.441H46.399Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.6003 277.192L34.8208 276.323L31.8423 278.575L45.4762 279.16C45.5117 278.504 45.5471 277.83 45.5826 277.174L45.6003 277.192Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M45.2109 285.892C45.2109 285.289 45.2464 284.704 45.2641 284.101L26.1343 283.179L24.6982 284.385L26.0457 285.643L45.1932 285.892H45.2109Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M31.4526 290.583C32.3568 291.399 33.332 292.214 34.2893 293.03L45.1575 292.835C45.1575 292.179 45.1575 291.505 45.1575 290.849L31.4526 290.601V290.583Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M326.967 359.078L316.187 359.929C316.222 360.585 316.258 361.223 316.293 361.879L329.927 361.294L326.949 359.078H326.967Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M337.055 367.005L335.619 365.817L316.489 366.721C316.506 367.306 316.542 367.891 316.542 368.476L335.69 368.228L337.037 366.987L337.055 367.005Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M330.335 373.116L316.63 373.364C316.63 374.02 316.63 374.658 316.63 375.314L327.499 375.509C328.438 374.711 329.431 373.914 330.335 373.116Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M246.635 54.7133L244.082 59.429C244.685 59.7658 245.305 60.1204 245.908 60.4749L248.585 55.9188L246.954 56.5216L246.635 54.731V54.7133Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M258.868 52.2906L255.357 53.4784L249.933 62.8389C250.5 63.1757 251.049 63.5125 251.599 63.8494L258.868 52.2906Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M257.202 67.3734L267.875 51.4703L267.609 49.6619L265.819 50.1583L255.713 66.416C256.209 66.7351 256.706 67.0365 257.202 67.3734Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M262.84 71.1802L269.169 62.3516C269.045 61.1284 268.957 59.8697 268.797 58.6642L261.227 70.081C261.759 70.4533 262.291 70.8256 262.84 71.1979V71.1802Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M223.32 45.3111L221.849 46.2153L221.193 44.5134V44.5488L221.175 44.5134L219.58 49.6368C220.253 49.8495 220.909 50.08 221.565 50.3105L223.32 45.3289V45.3111Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M232.735 39.8003L229.508 41.644L225.98 51.8554C226.583 52.0682 227.204 52.2986 227.806 52.5291L232.735 39.8003Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M233.977 54.9319L241.406 37.2737L240.803 35.5539L239.154 36.3872L232.346 54.276C232.896 54.4887 233.445 54.7015 233.977 54.9319Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M240.253 57.5906L244.774 47.6976C244.419 46.5097 244.082 45.2864 243.71 44.1517L238.462 56.8105C239.065 57.0765 239.65 57.3247 240.253 57.5906Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M168.467 39.6681V39.7036L168.449 39.6681L167.438 41.1927L166.18 39.9872L166.853 45.2347C167.545 45.1638 168.254 45.0752 168.945 45.0043L168.467 39.6681Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M162.207 45.8148L160.912 35.0884L158.146 32.6063L160.274 46.0984C160.912 46.0098 161.568 45.9034 162.207 45.8148Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M155.47 46.8433L152.598 27.9085L151.161 26.7383L150.204 28.2985L153.732 47.1269C154.317 47.0206 154.902 46.9319 155.47 46.8433Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M148.964 48.025L146.499 34.5506C145.879 35.5967 145.294 36.7136 144.708 37.7951L147.049 48.4151C147.687 48.2909 148.325 48.1491 148.964 48.025Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M204.191 32.4119L201.39 34.8408L199.901 45.5494C200.539 45.6558 201.177 45.7622 201.833 45.8685L204.209 32.4296L204.191 32.4119Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M212.222 28.2385L211.3 26.6606L209.829 27.7953L206.602 46.6769C207.187 46.7832 207.754 46.8896 208.34 46.996L212.222 28.2385Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M217.522 37.8306C216.955 36.7313 216.387 35.5967 215.784 34.5506L213.072 47.9895C213.71 48.1314 214.348 48.2732 214.987 48.4151L217.522 37.8483V37.8306Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M195.946 39.6323L195.91 39.6678V39.6323L194.652 40.9442L193.641 39.5437L193.357 44.8266C194.049 44.8798 194.758 44.9153 195.449 44.9685L195.928 39.6323H195.946Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M189.332 33.7818L187.063 30.8564L186.744 44.5081C187.4 44.5258 188.038 44.5435 188.694 44.579L189.332 33.7818Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M182.436 25.2303L181.23 23.8297L180.007 25.1948L180.113 44.3423C180.698 44.3423 181.283 44.3601 181.868 44.3778L182.418 25.2303H182.436Z" fill="var(--can-color-0)"/>
+            <path class="can-branding-underlay-group-3" d="M175.237 30.6503C174.439 31.5723 173.659 32.5651 172.896 33.5225L173.304 44.3907C173.96 44.3907 174.598 44.3552 175.254 44.3552V30.6503H175.237Z" fill="var(--can-color-0)"/>
+            <path d="M181.426 524.359C145.511 524.359 111.7 510.416 86.1826 485.052C60.5732 459.615 46.4048 425.79 46.3316 389.826L45.7641 178.744C45.6726 142.781 59.658 108.883 85.1392 83.3179C110.62 57.7527 144.504 43.627 180.547 43.5356C180.657 43.5356 180.767 43.5356 180.895 43.5356C216.792 43.5356 250.62 57.4969 276.138 82.8428C301.748 108.28 315.898 142.105 315.989 178.068L316.557 389.15C316.648 425.113 302.663 459.012 277.182 484.577C251.701 510.142 217.817 524.268 181.792 524.359H181.444H181.426ZM180.877 46.9894H180.547C145.437 47.0807 112.433 60.841 87.5921 85.7666C62.7516 110.674 49.1323 143.695 49.2238 178.744L49.7913 389.826C49.8828 424.876 63.6669 457.824 88.6355 482.621C113.513 507.328 146.462 520.924 181.444 520.924H181.774C216.884 520.832 249.888 507.072 274.729 482.146C299.569 457.239 313.189 424.2 313.097 389.15L312.53 178.068C312.438 143.019 298.654 110.071 273.685 85.2732C248.827 60.5852 215.858 46.9894 180.877 46.9894Z" fill="var(--can-color-2)"/>
+          </svg>
+        </div>
+        {%- if primary_image -%}
+          <div class='card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}'>
+            <div class='media media--transparent media--hover-effect'>
+              {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+              <img
+                srcset='
+                  {%- if primary_image.width >= 165 -%}{{ primary_image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if primary_image.width >= 360 -%}{{ primary_image | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if primary_image.width >= 533 -%}{{ primary_image | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if primary_image.width >= 720 -%}{{ primary_image | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if primary_image.width >= 940 -%}{{ primary_image | image_url: width: 940 }} 940w,{%- endif -%}
+                  {%- if primary_image.width >= 1066 -%}{{ primary_image | image_url: width: 1066 }} 1066w,{%- endif -%}
+                  {{ primary_image | image_url }} {{ primary_image.width }}w
+                '
+                src='{{ primary_image | image_url: width: 533 }}'
+                sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)'
+                alt='{{ primary_image.alt | escape }}'
+                class='motion-reduce'
+                {% unless lazy_load == false %}
+                  loading='lazy'
+                {% endunless %}
+                width='{{ primary_image.width }}'
+                height='{{ primary_image.height }}'
+              >
+              {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+
+              {%- if card_product.media[1] != null and show_secondary_image -%}
+                <img
+                  srcset='
+                    {%- if card_product.media[1].width >= 165 -%}{{ card_product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if card_product.media[1].width >= 360 -%}{{ card_product.media[1] | image_url: width: 360 }} 360w,{%- endif -%}
+                    {%- if card_product.media[1].width >= 533 -%}{{ card_product.media[1] | image_url: width: 533 }} 533w,{%- endif -%}
+                    {%- if card_product.media[1].width >= 720 -%}{{ card_product.media[1] | image_url: width: 720 }} 720w,{%- endif -%}
+                    {%- if card_product.media[1].width >= 940 -%}{{ card_product.media[1] | image_url: width: 940 }} 940w,{%- endif -%}
+                    {%- if card_product.media[1].width >= 1066 -%}{{ card_product.media[1] | image_url: width: 1066 }} 1066w,{%- endif -%}
+                    {{ card_product.media[1] | image_url }} {{ card_product.media[1].width }}w
+                  '
+                  src='{{ card_product.media[1] | image_url: width: 533 }}'
+                  sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)'
+                  alt=''
+                  class='motion-reduce'
+                  loading='lazy'
+                  width='{{ card_product.media[1].width }}'
+                  height='{{ card_product.media[1].height }}'
+                >
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        <div class='card__content'>
+          <div class='card__information'>
+            <h3
+              class='card__heading'
+              {% if primary_image == null and settings.card_style == 'standard' %}
+                id='title-{{ section_id }}-{{ card_product.id }}'
+              {% endif %}
+            >
+              <a
+                href='{{ card_product.url }}'
+                id='StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}'
+                class='full-unstyled-link'
+                aria-labelledby='StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}'
+              >
+                {{ card_product.title | escape }}
+              </a>
+            </h3>
+          </div>
+          <div class='card__badge {{ settings.badge_position }}'>
+            {%- if card_product.available == false -%}
+              <span
+                id='NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}'
+                class='badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}'
+              >
+                {{- 'products.product.sold_out' | t -}}
+              </span>
+            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+              <span
+                id='NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}'
+                class='badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}'
+              >
+                {{- 'products.product.on_sale' | t -}}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class='can-branding-overlay tw-overflow-hidden tw-absolute tw-w-full tw-h-full tw-rounded-full'>
+          <div class='overlay-1 can-branding-overlay-layer tw-w-full tw-h-full tw-rounded-full'>
+            <div class='overlay-2 can-branding-overlay-layer tw-w-full tw-h-full tw-rounded-full'>
+              <div class='overlay-3 can-branding-overlay-layer tw-w-full tw-h-full tw-rounded-full'>
+                <svg
+                  class='overlay-4 can-branding-overlay-layer tw-w-full tw-h-full'
+                  preserveAspectRatio='none'
+                  viewBox='0 0 244 454'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path d="M123.007 450.56C57.8066 450.731 4.63053 394.87 4.46826 326.058L3.96522 128.188C3.80295 59.3588 56.7194 3.22339 121.92 3.05209C187.12 2.88079 240.296 58.7421 240.458 127.554L240.962 325.424C241.124 394.253 188.207 450.388 123.007 450.56Z" stroke="var(--can-color-0)" />
+                </svg>
+                <a
+                  href='{{ card_product.url }}'
+                  class='tw-absolute tw-left-0 tw-right-0 tw-top-0 tw-bottom-0'
+                >
+                  <span class='tw-opacity-0 tw-pointer-events-none'>{{ card_product.title | escape }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='card__content'>
+        <div class='card__information'>
+          <h3
+            class='card__heading tw-text-2xl xlg:tw-text-3xl tw-text-center tw-relative tw-h-[48px] xlg:tw-h-[58px] tw-max-w-[240px] tw-mx-auto'
+            {% if primary_image or settings.card_style == 'card' %}
+              id='title-{{ section_id }}-{{ card_product.id }}'
+            {% endif %}
+          >
+            <a
+              href='{{ card_product.url }}'
+              id='CardLink-{{ section_id }}-{{ card_product.id }}'
+              class='full-unstyled-link tw-text-balance'
+              aria-labelledby='CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}'
+            >
+              {{ card_product.title | escape | replace: 'Honey Date Gold Rush', 'Honey Date<br>Gold Rush' }}
+            </a>
+          </h3>
+          <div class='card-information'>
+            {%- if show_vendor -%}
+              <span class='visually-hidden'>{{ 'accessibility.vendor' | t }}</span>
+              <div class='caption-with-letter-spacing light'>{{ card_product.vendor }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+        {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
+        {% if quick_add == 'standard' %}
+          <div class='quick-add no-js-hidden'>
+            {%- liquid
+              assign qty_rules = false
+              if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+                assign qty_rules = true
+              endif
+            -%}
+            {% assign options_allowed = true %}
+            {% if card_product.tags contains 'hide-options' %}
+              {% assign options_allowed = false %}
+            {% endif %}
+            {%- if options_allowed and card_product.variants.size > 1 -%}
+              <modal-opener data-modal='#QuickAdd-{{ card_product.id }}'>
+                <button
+                  id='{{ product_form_id }}-submit'
+                  type='submit'
+                  name='add'
+                  class='quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}'
+                  aria-haspopup='dialog'
+                  aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
+                  data-product-url='{{ card_product.url }}'
+                >
+                  <div class='button-inner'>
+                    <span class='button-label'>
+                      {{ 'products.product.choose_options' | t }}
+                      <span class='icon-wrap'>
+                        {%- render 'price', product: card_product, price_class: '', show_compare_at_price: false -%}
+                      </span>
+                      {%- render 'loading-spinner' -%}
+                    </span>
+                  </div>
+                </button>
+              </modal-opener>
+              <quick-add-modal id='QuickAdd-{{ card_product.id }}' class='quick-add-modal'>
+                <div
+                  role='dialog'
+                  aria-label='{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}'
+                  aria-modal='true'
+                  class='quick-add-modal__content global-settings-popup'
+                  tabindex='-1'
+                >
+                  <button
+                    id='ModalClose-{{ card_product.id }}'
+                    type='button'
+                    class='quick-add-modal__toggle'
+                    aria-label='{{ 'accessibility.close' | t }}'
+                  >
+                    {% render 'icon-close' %}
+                  </button>
+                  <div id='QuickAddInfo-{{ card_product.id }}' class='quick-add-modal__content-info'></div>
+                </div>
+              </quick-add-modal>
+            {%- else -%}
+              <product-form data-section-id='{{ section.id }}'>
+                {%- form 'product',
+                  card_product,
+                  id: product_form_id,
+                  class: 'form',
+                  novalidate: 'novalidate',
+                  data-type: 'add-to-cart-form'
+                -%}
+                  <input
+                    type='hidden'
+                    name='id'
+                    value='{{ card_product.selected_or_first_available_variant.id }}'
+                    class='product-variant-id'
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
+                  >
+
+                  <button
+                    id='{{ product_form_id }}-submit'
+                    type='submit'
+                    name='add'
+                    class='quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}'
+                    aria-haspopup='dialog'
+                    aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
+                    aria-live='polite'
+                    data-sold-out-message='true'
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
+                  >
+                    <div class='button-inner'>
+                      <span class='button-label tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center tw-font-subheadline tw-uppercase tw-text-[12px] tw-tracking-wider'>
+                        <span>
+                          {%- if card_product.selected_or_first_available_variant.available -%}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {%- else -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- endif -%}
+                        </span>
+                        <span class='sold-out-message hidden'>
+                          {{ 'products.product.sold_out' | t }}
+                        </span>
+                        {%- if horizontal_quick_add -%}
+                          <span class='icon-wrap'>{% render 'icon-plus' %}</span>
+                        {%- endif -%}
+                        {%- render 'loading-spinner' -%}
+                      </span>
+                    </div>
+                  </button>
+                {%- endform -%}
+              </product-form>
+            {%- endif -%}
+          </div>
+        {% elsif quick_add == 'bulk' %}
+          {% if card_product.variants.size == 1 %}
+            <quick-add-bulk
+              data-min='{{ card_product.selected_or_first_available_variant.quantity_rule.min }}'
+              id='quick-add-bulk-{{ card_product.selected_or_first_available_variant.id }}-{{ section.id }}'
+              class='quick-add-bulk'
+              data-index='{{ card_product.selected_or_first_available_variant.id }}'
+            >
+              {% if card_product.selected_or_first_available_variant.available == false %}
+                <button
+                  id='{{ product_form_id }}-submit'
+                  type='submit'
+                  name='add'
+                  class='quick-add__submit button button--full-width button--secondary'
+                  aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
+                  data-sold-out-message='true'
+                  disabled
+                >
+                  <span>{{ 'products.product.sold_out' | t }}</span>
+                  <span class='sold-out-message hidden'>
+                    {{ 'products.product.sold_out' | t }}
+                  </span>
+                </button>
+              {% else %}
+                {% render 'quantity-input', variant: card_product.selected_or_first_available_variant, min: 0 %}
+              {% endif %}
+            </quick-add-bulk>
+          {% else %}
+            <div class='quick-add no-js-hidden'>
+              {%- liquid
+                assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
+                assign qty_rules = false
+                if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+                  assign qty_rules = true
+                endif
+              -%}
+              <modal-opener
+                id='QuickBulk-{{ card_product.id }}-{{ section_id }}'
+                data-modal='#QuickAddBulk-{{ card_product.id }}-{{ section.id }}'
+              >
+                <button
+                  id='{{ product_form_id }}-submit'
+                  type='submit'
+                  name='add'
+                  class='quick-add__submit button button--full-width button--secondary'
+                  aria-haspopup='dialog'
+                  aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}'
+                  data-product-url='{{ card_product.url }}'
+                >
+                  {{ 'products.product.choose_options' | t }}
+                  {%- render 'loading-spinner' -%}
+                </button>
+              </modal-opener>
+              <modal-dialog
+                id='QuickAddBulk-{{ card_product.id }}-{{ section_id }}'
+                class='quick-add-modal color-{{ section.settings.color_scheme }}'
+              >
+                <div
+                  role='dialog'
+                  aria-label='{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}'
+                  aria-modal='true'
+                  class='quick-add-modal__content quick-add-modal__content--bulk global-settings-popup'
+                  tabindex='-1'
+                >
+                  <button
+                    id='ModalClose-{{ card_product.id }}'
+                    type='button'
+                    class='quick-add-modal__toggle'
+                    aria-label='{{ 'accessibility.close' | t }}'
+                  >
+                    {% render 'icon-close' %}
+                  </button>
+                  <div
+                    id='QuickAddInfo-{{ card_product.id }}'
+                    class='quick-add-modal__content-info quick-add-modal__content-info--bulk'
+                  >
+                    <div class='quick-add__content-info__media'>
+                      <div class='quick-add__info'>
+                        {%- if primary_image -%}
+                          <div
+                            class='quick-add__product-media'
+                          >
+                            <div class='quick-add__product-container global-media-settings'>
+                              {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+                              <img
+                                srcset='
+                                  {%- if primary_image.width >= 165 -%}{{ primary_image | image_url: width: 165 }} 165w,{%- endif -%}
+                                  {%- if primary_image.width >= 360 -%}{{ primary_image | image_url: width: 360 }} 360w,{%- endif -%}
+                                  {%- if primary_image.width >= 533 -%}{{ primary_image | image_url: width: 533 }} 533w,{%- endif -%}
+                                  {%- if primary_image.width >= 720 -%}{{ primary_image | image_url: width: 720 }} 720w,{%- endif -%}
+                                  {%- if primary_image.width >= 940 -%}{{ primary_image | image_url: width: 940 }} 940w,{%- endif -%}
+                                  {%- if primary_image.width >= 1066 -%}{{ primary_image | image_url: width: 1066 }} 1066w,{%- endif -%}
+                                  {{ primary_image | image_url }} {{ primary_image.width }}w
+                                '
+                                src='{{ primary_image | image_url: width: 533 }}'
+                                sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)'
+                                alt='{{ primary_image.alt | escape }}'
+                                class='motion-reduce'
+                                {% unless lazy_load == false %}
+                                  loading='lazy'
+                                {% endunless %}
+                                width='{{ primary_image.width }}'
+                                height='{{ primary_image.height }}'
+                              >
+                              {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+                            </div>
+                          </div>
+                        {%- endif -%}
+                        <a
+                          {% if card_product == blank %}
+                            role='link' aria-disabled='true'
+                          {% else %}
+                            href='{{ card_product.url }}'
+                          {% endif %}
+                          class='link product__view-details animate-arrow small-hide medium-hide'
+                        >
+                          {{ 'products.product.view_full_details' | t -}}
+                          {% render 'icon-arrow' %}
+                        </a>
+                      </div>
+                      <div class='quick-add-modal__content-info--bulk-details large-up-hide'>
+                        <a href='{{ card_product.url }}' class='full-unstyled-link'>
+                          <h3>{{ card_product.title | escape }}</h3>
+                        </a>
+                        {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+                        {%- if card_product.quantity_price_breaks_configured? -%}
+                          <div class='card__information-volume-pricing-note'>
+                            <span class='caption'>{{ 'products.product.volume_pricing.note' | t }}</span>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                    <div>
+                      <div class='quick-add-modal__content-info--bulk-details small-hide medium-hide'>
+                        <a href='{{ card_product.url }}' class='full-unstyled-link'>
+                          <h3 class='h2'>
+                            {{ card_product.title | escape }}
+                          </h3>
+                        </a>
+                        {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+                        {%- if card_product.quantity_price_breaks_configured? -%}
+                          <div class='card__information-volume-pricing-note'>
+                            <span class='caption'>{{ 'products.product.volume_pricing.note' | t }}</span>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                      <bulk-modal
+                        id='QuickBulkModal-{{ card_product.id }}-{{ section_id }}'
+                        data-url='{{ card_product.url }}'
+                        data-section-id='{{ section_id }}'
+                        data-product-id='{{ card_product.id }}'
+                      >
+                      </bulk-modal>
+                    </div>
+                  </div>
+                </div>
+              </modal-dialog>
+            </div>
+          {% endif %}
+        {% endif %}
+        <div class='card__badge {{ settings.badge_position }}'>
+          {%- if card_product.available == false -%}
+            <span
+              id='Badge-{{ section_id }}-{{ card_product.id }}'
+              class='badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}'
+            >
+              {{- 'products.product.sold_out' | t -}}
+            </span>
+          {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+            <span
+              id='Badge-{{ section_id }}-{{ card_product.id }}'
+              class='badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}'
+            >
+              {{- 'products.product.on_sale' | t -}}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  {%- liquid
+    assign ratio = 1
+    assign placeholder = true
+    if media_aspect_ratio == 'portrait'
+      assign ratio = 0.8
+    endif
+  -%}
+  <div class='card-wrapper product-card-wrapper underline-links-hover'>
+    <div
+      class='
+        card card--{{ settings.card_style }}
+        {% if extend_height %} card--extend-height{% endif %}
+        {% if image_shape and image_shape != 'default' %} card--shape{% endif %}
+        {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
+      '
+      style='--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;'
+    >
+      <div
+        class='card__inner{% if settings.card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %} ratio'
+      >
+        <div
+          class='card__media {% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}'
+        >
+          <div
+            class='media media--transparent'
+          >
+            {%- if placeholder_image -%}
+              {{ placeholder_image | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- else -%}
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class='card__content'>
+        <div class='card__information'>
+          <h3 class='card__heading card__heading--placeholder{% if settings.card_style == 'standard' %} h5{% endif %}'>
+            <a role='link' aria-disabled='true' class='full-unstyled-link'>
+              {{ 'onboarding.product_title' | t }}
+            </a>
+          </h3>
+          <div class='card-information'>
+            {%- if show_vendor -%}
+              <span class='visually-hidden'>{{ 'accessibility.vendor' | t }}</span>
+              <div class='caption-with-letter-spacing light'>{{ 'products.product.vendor' | t }}</div>
+            {%- endif -%}
+            {% render 'price', placeholder: placeholder, show_compare_at_price: true %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

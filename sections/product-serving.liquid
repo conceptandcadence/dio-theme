@@ -1,0 +1,141 @@
+{% if product.metafields.media.serving != blank %}
+  {% assign serving_media = product.metafields.media.serving %}
+{% endif %}
+
+{% if serving_media != blank %}
+  {{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+    	padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    	padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+    	.section-{{ section.id }}-padding {
+    		padding-top: {{ section.settings.padding_top }}px;
+    		padding-bottom: {{ section.settings.padding_bottom }}px;
+    	}
+    }
+  {%- endstyle -%}
+
+  {%- liquid
+    assign fetch_priority = 'auto'
+    if section.index == 1
+      assign fetch_priority = 'high'
+    endif
+    if section.settings.color_scheme == section.settings.section_color_scheme and section.settings.content_layout == 'no-overlap'
+      assign remove_color_classes = true
+    endif
+  -%}
+
+  {% comment %}
+    gradient color-{{ section.settings.section_color_scheme }}
+  {% endcomment %}
+
+  <div class='section-{{ section.id }}-padding product-reviews tw-px-[20px] tw-mb-[40px] md:tw-px-[100px] md:tw-mb-0'>
+    {% capture serving_content %}
+			<div class='tw-relative tw-flex tw-flex-col-reverse md:tw-flex-row'>
+				<div class='media media--transparent corners--fancy-frame tw-mt-12 tw-w-full md:tw-w-1/2 md:tw-mt-0'>
+					{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+					{% if serving_media.value.media_type == 'video' %}
+						{% render 'responsive-video',
+							video: collection_media.value,
+							classes: 'responsive-video',
+							defer: true,
+							autoplay: true
+						%}
+					{% else %}
+						{% render 'responsive-image', media: serving_media, classes: 'img responsive-image motion-reduce fancy lg:tw-h-full tw-h-auto tw-object-cover', defer: true %}
+					{% endif %}
+			
+					{% render 'corners-fancy' %}
+				</div>
+				<div class='tw-flex tw-justify-center tw-items-center tw-w-full'>
+					<div class='tw-flex tw-justify-between tw-flex-col tw-max-w-[400px]'>
+						<span class="h3 tw-text-center tw-mb-8 tw-max-w-[360px]">Enjoy DIO however the mood strikes you</span>
+						<div class="tw-flex tw-justify-between">
+							<div class="tw-flex tw-justify-between tw-flex-col tw-items-center text">
+								{% render 'icon-halo', class: 'tw-text-gold tw-max-w-[100px]' %}
+								{% render 'icon-serving-can' %}
+								<span class="h5 tw-text-center">from the source</span>
+							</div>
+							<div class="tw-flex tw-justify-between tw-flex-col tw-items-center text">
+								{% render 'icon-halo', class: 'tw-text-gold tw-max-w-[100px]' %}
+								{% render 'icon-serving-garnished' %}
+								<span class="h5 tw-text-center">garnished over ice</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endcapture %}
+    {% render 'fancy-frame4',
+      content: serving_content,
+      size_corner: '36px',
+      size_corner_lg: '56px',
+      class: 'tw-max-w-[1300px] tw-mx-auto md:tw-py-[50px]',
+      content_class: 'tw-flex tw-w-full tw-flex-grow tw-relative',
+      content_wrapper: 'frame-fancy4-content  tw-py-[20px] tw-px-[60px] tw--my-[20px] tw-w-full'
+    %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Serving",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.multirow.settings.container_color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Product Serving"
+    }
+  ]
+}
+{% endschema %}

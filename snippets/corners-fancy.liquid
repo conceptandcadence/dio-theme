@@ -1,0 +1,57 @@
+<div
+  class='corners--fancy {{ class | default: 'tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0' }}'
+  style='--cornerSize: {{ cornerSize | default: '20px' }}; --cornerSizeLg: {{ cornerSizeLg | default: '28px' }}; color: rgb(var(--color-background))'
+>
+  <svg
+    class='fancy-corner tw-top-0 tw-left-0 tw-absolute'
+    width='36'
+    height='36'
+    viewBox='0 0 36 36'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d="M-3.14716e-06 3.14716e-06L35.9993 0C30.1824 5.08529e-07 25.3323 4.13867 24.2329 9.63208L9.63208 9.63208L9.63208 24.233C4.13867 25.3323 3.30617e-06 30.1824 0 35.9993L-3.14716e-06 3.14716e-06Z" fill="currentColor"/>
+  </svg>
+  <svg
+    class='fancy-corner tw-top-0 tw-right-0 tw-absolute tw-rotate-90'
+    width='36'
+    height='36'
+    viewBox='0 0 36 36'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d="M-3.14716e-06 3.14716e-06L35.9993 0C30.1824 5.08529e-07 25.3323 4.13867 24.2329 9.63208L9.63208 9.63208L9.63208 24.233C4.13867 25.3323 3.30617e-06 30.1824 0 35.9993L-3.14716e-06 3.14716e-06Z" fill="currentColor"/>
+  </svg>
+  <svg
+    class='fancy-corner tw-bottom-0 tw-left-0 tw-absolute tw--rotate-90'
+    width='36'
+    height='36'
+    viewBox='0 0 36 36'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d="M-3.14716e-06 3.14716e-06L35.9993 0C30.1824 5.08529e-07 25.3323 4.13867 24.2329 9.63208L9.63208 9.63208L9.63208 24.233C4.13867 25.3323 3.30617e-06 30.1824 0 35.9993L-3.14716e-06 3.14716e-06Z" fill="currentColor"/>
+  </svg>
+  <svg
+    class='fancy-corner tw-bottom-0 tw-right-0 tw-absolute tw-rotate-180'
+    width='36'
+    height='36'
+    viewBox='0 0 36 36'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d="M-3.14716e-06 3.14716e-06L35.9993 0C30.1824 5.08529e-07 25.3323 4.13867 24.2329 9.63208L9.63208 9.63208L9.63208 24.233C4.13867 25.3323 3.30617e-06 30.1824 0 35.9993L-3.14716e-06 3.14716e-06Z" fill="currentColor"/>
+  </svg>
+  <style>
+    .fancy-corner {
+      width: var(--cornerSize);
+      height: var(--cornerSize);
+    }
+    @media (min-width: 990px) {
+      .fancy-corner {
+        width: var(--cornerSizeLg);
+        height: var(--cornerSizeLg);
+      }
+    }
+  </style>
+</div>

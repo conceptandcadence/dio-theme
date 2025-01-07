@@ -1,0 +1,124 @@
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  @media screen and (max-width: 749px) {
+    .collection-hero--with-image .collection-hero__inner {
+      padding-bottom: calc({{settings.media_shadow_vertical_offset | at_least: 0}}px + 2rem);
+    }
+  }
+{%- endstyle -%}
+
+<div class='collection-hero{% if section.settings.show_collection_image and page.image %} collection-hero--with-image{% endif %} tw-p-6 color-{{ section.settings.color_scheme }} gradient'>
+  <div class='collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}'>
+    {%- if section.settings.show_collection_halo -%}
+      <div class='collection-hero__deco tw-text-gold tw-mx-auto tw-w-[100px] tw-mt-[20px]'>
+        {% render 'icon-halo' %}
+      </div>
+    {%- endif -%}
+    <div class='collection-hero__text-wrapper'>
+      <h1 class='page-hero__title tw-max-w-[700px] tw-my-[20px] tw-mx-auto tw-text-center tw-justify-center tw-items-center tw-w-full'>
+        <span class='tw-mx-auto'>
+          {%- if page.metafields.header.title != blank -%}
+            {{- page.metafields.header.title | escape -}}
+          {%- else -%}
+            {{- page.title | escape -}}
+          {%- endif -%}
+        </span>
+        {%- if section.settings.show_collection_cats -%}
+          <div class='collection-hero__deco tw-fill-gold tw-mx-auto tw-max-w-[80px] tw-h-full tw-ml-4 tw-invisible tw-absolute md:tw-visible md:tw-relative'>
+            {% render 'icon-cat-left' %}
+          </div>
+        {%- endif -%}
+      </h1>
+    </div>
+
+    {%- if section.settings.show_collection_description -%}
+      <div class='collection-hero__description rte'>{{ page.description }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.show_collection_image and page.image -%}
+      <div class='collection-hero__image-container media gradient'>
+        <img
+          srcset='
+            {%- if page.image.width >= 165 -%}{{ page.image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if page.image.width >= 360 -%}{{ page.image | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if page.image.width >= 535 -%}{{ page.image | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if page.image.width >= 750 -%}{{ page.image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if page.image.width >= 1070 -%}{{ page.image | image_url: width: 1070 }} 1070w,{%- endif -%}
+            {%- if page.image.width >= 1500 -%}{{ page.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {{ page.image | image_url }} {{ page.image.width }}w
+          '
+          src='{{ page.image | image_url: width: 750 }}'
+          sizes='(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)'
+          alt='{{ page.image.alt | escape }}'
+          width='{{ page.image.width }}'
+          height='{{ page.image.height }}'
+        >
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if page.metafields.header.navigation.value != blank -%}
+    {% assign navagation = page.metafields.header.navigation.value %}
+    <div class='collection-hero__navigation tw-pb-[30px] tw-pt-[0px] lg:tw-pb-[50px] lg:tw-pt-[20px]'>
+      <ul class='collection-hero__navigation tw-flex tw-justify-center'>
+        {% for category in navagation.collections.value %}
+          <li class='tw-py-4 tw-px-8'>
+            <a
+              class='h4 link--animated{% if page.handle == category.handle %} active{% endif %}'
+              href='/collections/{{ category.handle }}'
+            >
+              {{- category.title -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  @media screen and (min-width: 750px) {
+    .page-hero__title span {
+      padding: 0 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Banner",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection-banner.settings.paragraph.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_cats",
+      "default": true,
+      "label": "Shows cat icons in header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_halo",
+      "default": true,
+      "label": "Shows halo icon in header"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}
