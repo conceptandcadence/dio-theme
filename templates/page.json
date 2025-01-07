@@ -1,14 +1,147 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "image_with_text_KbwA3z": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_DCCV77": {
+          "type": "heading",
+          "settings": {
+            "heading": "An ode to dionysus",
+            "heading_size": "h2"
+          }
+        },
+        "text_F83JAK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our tantalizing tonics are crafted in the hedonistic spirit of the original party god, Dionysus.<\/p><p>Dionysus, revered as “DIO” on the heavenly peaks of Mount Olympus, has been theimmortal hand composing the most splendid soirees throughout history. Son of Zeus,the almighty king of gods, and a mortal woman, DIO temptingly fuses the mortaland the divine, turning the fruits of the earthly realm into potions so potent thateven Aphrodite swoons. <\/p><p>A god whose sole purpose is pleasure, DIO is known for hisability to create the most exquisite elixirs and awaken even the most imperial spiritsfrom the prude slumber of everyday life. A nectar of the gods, one sip is like settingablaze the spitfire soul of Hades after a long humdrum hibernation.<\/p><p>A half-mortal, DIO has a particular fondness for the spoils of the mortal realm... andof course, the mortals within it. Seeking to seduce those who roam this earthly realmin pursuit of pleasure, he comes bearing gifts: a line of celestially canned cocktails fitfor a god to inspire a world of spectacular soirees and decadent delights.<\/p><p>Raise a glass in honor of Dionysus and #drinkdivinity.<\/p>",
+            "text_style": "tw-font-quote tw-text-2xl",
+            "alignment": "tw-text-left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_DCCV77",
+        "text_F83JAK"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/dionysus2.jpg",
+        "height": "large",
+        "desktop_image_width": "small",
+        "layout": "text_first",
+        "desktop_column_width": "600px",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_b6wTdh": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_GzLrGt": {
+          "type": "heading",
+          "settings": {
+            "heading": "Bronson van Wyck",
+            "heading_size": "h2"
+          }
+        },
+        "text_zpMPQC": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Nick earned his stripes launching both hip LA brands and cutting-edge tech clients at several award-winning ad agencies. He started really making waves when he launched his own brand, PANGEA Swimwear, in 2016. <\/p><p>Bradley’s travels inspired a treasure trove of swim trunks worthy of any full moon party in Tulum or a Malibu business lunch. Those same travels have landed him in some of the globe’s most exotic shindigs, further inspiring some of DIO’s worldly ingredients and flavors. <\/p><p>Nick’s experience creating the PANGEA brand inspired Bronson van Wyck to call him up with an invitation too good to pass up.<\/p>",
+            "text_style": "tw-font-quote tw-text-2xl",
+            "alignment": "tw-text-left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GzLrGt",
+        "text_zpMPQC"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/image_2339.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_column_width": "",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_4b9AYy": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_LTJHcj": {
+          "type": "heading",
+          "settings": {
+            "heading": "Nick Bradley",
+            "heading_size": "h2"
+          }
+        },
+        "text_h9egFA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Humble host. Indulgent innovator. Acclaimed author. Creative council to the celebrity soiree. Anyone who’s heard of Bronson van Wyck is unsurprised by his latest venture. Every devilish detail of his infamous parties is designed to create an experience and define a mood. <\/p><p>His talent has drawn clients including Madonna, Gwyneth Paltrow, Swizz Beatz & Alicia Keys and many more. If you haven’t had the chance to attend one of his events, you’re always invited to slide your fingers across the cover of his book “Born to Party, Forced to Work” and flip your way into his universe. <\/p><p>Rooted in his belief that a delectable cocktail unlocks connection and conversation, the co-founder of DIO is offering a twist on timeless classics for elevated entertainment.<\/p>",
+            "text_style": "tw-font-quote tw-text-2xl",
+            "alignment": "tw-text-left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_LTJHcj",
+        "text_h9egFA"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/image_2338.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_column_width": "",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "image_with_text_KbwA3z",
+    "image_with_text_b6wTdh",
+    "image_with_text_4b9AYy"
   ]
 }

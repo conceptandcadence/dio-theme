@@ -1,22 +1,22 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "logo": "shopify://shop_images/logo-full.svg",
     "logo_width": 90,
     "favicon": "shopify://shop_images/favico.png",
-    "type_header_font": "rubik_n4",
+    "type_header_font": "sans-serif",
     "heading_scale": 100,
-    "type_body_font": "itc_johnston_n3",
+    "type_body_font": "serif",
     "body_scale": 100,
-    "page_width": 1200,
+    "page_width": 1800,
     "spacing_sections": 0,
     "spacing_grid_horizontal": 8,
     "spacing_grid_vertical": 8,
@@ -44,14 +44,14 @@
     "card_style": "standard",
     "card_image_padding": 0,
     "card_text_alignment": "left",
-    "card_color_scheme": "scheme-2",
+    "card_color_scheme": "scheme-1",
     "card_border_thickness": 0,
-    "card_border_opacity": 10,
+    "card_border_opacity": 0,
     "card_corner_radius": 0,
     "card_shadow_opacity": 0,
     "card_shadow_horizontal_offset": 0,
-    "card_shadow_vertical_offset": 4,
-    "card_shadow_blur": 5,
+    "card_shadow_vertical_offset": 0,
+    "card_shadow_blur": 0,
     "collection_card_style": "standard",
     "collection_card_image_padding": 0,
     "collection_card_text_alignment": "left",
@@ -81,13 +81,13 @@
     "text_boxes_shadow_horizontal_offset": 0,
     "text_boxes_shadow_vertical_offset": 4,
     "text_boxes_shadow_blur": 5,
-    "media_border_thickness": 1,
-    "media_border_opacity": 5,
+    "media_border_thickness": 0,
+    "media_border_opacity": 0,
     "media_radius": 0,
     "media_shadow_opacity": 0,
     "media_shadow_horizontal_offset": 0,
-    "media_shadow_vertical_offset": 4,
-    "media_shadow_blur": 5,
+    "media_shadow_vertical_offset": 0,
+    "media_shadow_blur": 0,
     "popup_border_thickness": 1,
     "popup_border_opacity": 10,
     "popup_corner_radius": 0,
@@ -105,8 +105,8 @@
     "badge_corner_radius": 40,
     "sale_badge_color_scheme": "scheme-5",
     "sold_out_badge_color_scheme": "scheme-3",
-    "social_facebook_link": "",
-    "social_instagram_link": "",
+    "social_facebook_link": "https://www.facebook.com/drinkdio",
+    "social_instagram_link": "https://www.instagram.com/drinkdio/",
     "social_youtube_link": "",
     "social_tiktok_link": "",
     "social_twitter_link": "",
@@ -117,11 +117,11 @@
     "predictive_search_enabled": true,
     "predictive_search_show_vendor": false,
     "predictive_search_show_price": false,
-    "currency_code_enabled": true,
-    "cart_type": "notification",
+    "currency_code_enabled": false,
+    "cart_type": "drawer",
     "show_vendor": false,
-    "show_cart_note": false,
-    "cart_drawer_collection": "",
+    "show_cart_note": true,
+    "cart_drawer_collection": "flavors",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
@@ -134,11 +134,99 @@
         "settings": {
           "color_scheme": "scheme-1"
         }
+      },
+      "flavor-carousel": {
+        "type": "flavor-carousel",
+        "settings": {
+          "title": "Drink divinity",
+          "heading_size": "h1",
+          "description": "",
+          "show_description": false,
+          "description_style": "body",
+          "collection": "flavors",
+          "products_to_show": 8,
+          "columns_desktop": 4,
+          "full_width": false,
+          "show_view_all": true,
+          "view_all_style": "solid",
+          "enable_desktop_slider": false,
+          "color_scheme": "",
+          "image_ratio": "adapt",
+          "image_shape": "capsule",
+          "show_secondary_image": false,
+          "show_vendor": false,
+          "show_rating": true,
+          "quick_add": "standard",
+          "columns_mobile": "1",
+          "swipe_on_mobile": true,
+          "padding_top": 0,
+          "padding_bottom": 0
+        }
       }
     },
-    "content_for_index": [
-
-    ],
+    "content_for_index": [],
+    "blocks": {
+      "17151115064775110295": {
+        "type": "shopify://apps/recharge-subscriptions/blocks/recharge-theme/371eed76-0b44-4869-9813-730372ea378e",
+        "disabled": false,
+        "settings": {
+          "color_brand": "#467C99",
+          "contrast_color": "#FFFFFF",
+          "color_brand_secondary": "#467C99",
+          "corners": "8px",
+          "app_background": "#f9f8f4",
+          "app_container": 1200,
+          "app_vertical_padding": 32,
+          "images_aspect_ratio": "1",
+          "cards_background": "#FFFFFF",
+          "cards_border_color": "rgba(0,0,0,0)"
+        }
+      },
+      "10864971697205422121": {
+        "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa",
+        "disabled": false,
+        "settings": {}
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "2323586426992478052": {
+        "type": "shopify://apps/bundle-builder-kitenzo/blocks/bundle-page-redirect/78802baf-205d-4d1d-908c-fae911f24e36",
+        "disabled": false,
+        "settings": {
+          "bundle_prefix": "/apps/bundles/bundle"
+        }
+      },
+      "1386531382474587334": {
+        "type": "shopify://apps/bundle-builder-kitenzo/blocks/bb-cart-integration/78802baf-205d-4d1d-908c-fae911f24e36",
+        "disabled": false,
+        "settings": {
+          "hide_accelerated_checkout": true,
+          "placement": "above",
+          "hide_empty_line_items": false,
+          "font_size": 16,
+          "font_color": "",
+          "button_color": "",
+          "button_background": "",
+          "button_radius": 0,
+          "border_color": "#000000",
+          "background": "",
+          "heading": "Your cart contains {count} bundle",
+          "heading_plural": "Your cart contains {count} bundles",
+          "view_text": "View Details",
+          "modal_title": "Your bundle summary",
+          "modal_font_color": "#000000",
+          "modal_background": "#FFFFFF",
+          "modal_border_color": "#C4C4C4",
+          "modal_item_background": "",
+          "modal_item_content_background": "#F1F1F1",
+          "modal_item_product_background": "#FFFFFF",
+          "custom_css": ""
+        }
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
