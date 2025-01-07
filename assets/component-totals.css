@@ -1,6 +1,6 @@
 .totals {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-end;
 }
 
@@ -10,7 +10,7 @@
 }
 
 .totals > h2 {
-  font-size: calc(var(--font-heading-scale) * 1.6rem);
+  font-size: 24px;
 }
 
 .totals * {
@@ -21,8 +21,13 @@
   margin-left: 2rem;
 }
 
-.totals__total {
-  margin-top: 0.5rem;
+.totals__total, .totals__total-value, .cart-item__price-wrapper .price {
+	text-decoration: none;
+	display: block;
+	font-family: var(--font-heading-family);
+	font-weight: 400;
+	letter-spacing: 0;
+	font-size: 18px !important;
 }
 
 .totals__total-value {
@@ -31,10 +36,4 @@
 
 .cart__ctas + .totals {
   margin-top: 2rem;
-}
-
-@media all and (min-width: 750px) {
-  .totals {
-    justify-content: flex-end;
-  }
 }
