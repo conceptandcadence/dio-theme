@@ -1,5 +1,6 @@
 variant-selects {
   display: block;
+	margin-top: 1rem;
 }
 
 .product--no-media .product-form__input--pill,

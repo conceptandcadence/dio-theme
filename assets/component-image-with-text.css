@@ -122,7 +122,7 @@
 
 .image-with-text .image-with-text__media-item > * {
   border-radius: var(--media-radius);
-  overflow: hidden;
+  /* overflow: hidden; */
   box-shadow: var(--media-shadow-horizontal-offset)
     var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
     rgba(var(--color-shadow), var(--media-shadow-opacity));
@@ -207,10 +207,10 @@
   }
 
   .image-with-text__content--top {
-    justify-content: flex-start;
-    align-self: flex-start;
+    justify-content: flex-center;
+    align-self: flex-center;
   }
-
+/*
   .image-with-text__content--desktop-right > * {
     align-self: flex-end;
     text-align: right;
@@ -225,7 +225,7 @@
     align-self: center;
     text-align: center;
   }
-
+*/
   .image-with-text--overlap .image-with-text__text-item {
     display: flex;
     padding: 3rem 0;
@@ -339,6 +339,10 @@
 .image-with-text:not(.collapse-corners, .image-with-text--overlap)
   .image-with-text__media-item {
   z-index: 2;
+}
+
+.image-with-text__media-item {
+  z-index: 10;
 }
 
 /* Needed for gradient continuity with or without animation so that transparent PNG images come up as we would expect */
