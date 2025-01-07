@@ -1,0 +1,150 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-page-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_cats": false,
+        "show_collection_halo": true,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "faq_main_Jgn9pk": {
+      "type": "faq-main",
+      "blocks": {
+        "separator_wHPGz6": {
+          "type": "separator",
+          "settings": {
+            "title": "Product",
+            "description": "<p>Important information on...<\/p>"
+          }
+        },
+        "separator_MJrBmF": {
+          "type": "separator",
+          "settings": {
+            "title": "Order",
+            "description": "<p>Important information on...<\/p>"
+          }
+        },
+        "separator_tcEGVw": {
+          "type": "separator",
+          "settings": {
+            "title": "Shipping",
+            "description": "<p>Important information on...<\/p>"
+          }
+        },
+        "separator_MRfYKc": {
+          "type": "separator",
+          "settings": {
+            "title": "Wholesale",
+            "description": "<p>Important information on...<\/p>"
+          }
+        },
+        "question_XDUzyy": {
+          "type": "question",
+          "settings": {
+            "title": "Does DIO contain alcohol?",
+            "answer": "<p>Canned Cocktails: Yes, each DIO cocktail contains top-shelf spirits for an ABV of 15.3-16.5% per can.<\/p><p>Mixes: Our maenadic mixes are BYOA (bring your own alcohol) containing only fresh ingredients, ready to be paired with your spirit of choice upon consumption.<\/p>",
+            "section": "Product"
+          }
+        },
+        "question_DjtcDj": {
+          "type": "question",
+          "settings": {
+            "title": "Where do you ship?",
+            "answer": "<p>We ship to all U.S. states except for AL, AK, AR, HI, IL, MA, MI, MS, NC, OH, OK, SD, TN, UT & VT.<\/p>",
+            "section": "Shipping"
+          }
+        },
+        "question_wnwttc": {
+          "type": "question",
+          "settings": {
+            "title": "How many cocktails does DIO contain?",
+            "answer": "<p>Each 200 ML can contains two 100 ML drinks.<\/p>",
+            "section": "Product"
+          }
+        },
+        "question_i7a6zj": {
+          "type": "question",
+          "settings": {
+            "title": "How long does DIO last?",
+            "answer": "<p>Made with the freshest ingredients, DIO should be enjoyed within 12 months of the \"born on\" date listed on the bottom of each can.<\/p>",
+            "section": "Product"
+          }
+        },
+        "question_HrMFQb": {
+          "type": "question",
+          "settings": {
+            "title": "When will my order arrive?",
+            "answer": "<p>Orders will be processed within 24 hours after being placed. Orders will arrive within 2-7 business days after your order is placed, unless otherwise informed by email or website notice. Shipments are dispatched from the east coast and transit time will vary based on your distance from our warehouse.<\/p>",
+            "section": "Shipping"
+          }
+        },
+        "question_e3atKT": {
+          "type": "question",
+          "settings": {
+            "title": "How do i find out more about my order?",
+            "answer": "<p>You will receive a confirmation email after placing your order. Once your order ships, you will get an email with your order’s tracking number.<\/p>",
+            "section": "Orders"
+          }
+        },
+        "question_yidPx4": {
+          "type": "question",
+          "settings": {
+            "title": "What if my order arrives damaged?",
+            "answer": "<p>All orders are dispatched with the highest level of care. However, if something goes wrong during shipment, please email a picture of the damage to<a href=\"mailto:info@drinkdio.com\"><span style=\"text-decoration:underline\">info@drinkdio.com<\/span><\/a>so we can take it up with Hermes.<\/p>",
+            "section": "Order"
+          }
+        },
+        "question_kqL7M6": {
+          "type": "question",
+          "settings": {
+            "title": "What is your return policy?",
+            "answer": "<p>If you’re not 100% satisfied with your purchase, shoot us a note at<a href=\"mailto:info@drinkdio.com\"><span style=\"text-decoration:underline\">info@drinkdio.com<\/span><\/a>and we will help make it right.<\/p>",
+            "section": "Orders"
+          }
+        },
+        "question_RU6UeW": {
+          "type": "question",
+          "settings": {
+            "title": "Do you offer wholesale products?",
+            "answer": "<p>For any wholesale inquiries, please contact <a href=\"mailto:wholesale@drinkdio.com\"><span style=\"text-decoration:underline\">sales@drinkdio.com<\/span><\/a>.<\/p>",
+            "section": "Wholesale"
+          }
+        }
+      },
+      "block_order": [
+        "separator_wHPGz6",
+        "separator_MJrBmF",
+        "separator_tcEGVw",
+        "separator_MRfYKc",
+        "question_XDUzyy",
+        "question_DjtcDj",
+        "question_wnwttc",
+        "question_i7a6zj",
+        "question_HrMFQb",
+        "question_e3atKT",
+        "question_yidPx4",
+        "question_kqL7M6",
+        "question_RU6UeW"
+      ],
+      "settings": {
+        "contact_title": "need divine intervention?",
+        "contact_description": "<p>Take a look at our frequently asked questions. If you can’t find an answer to your question, reach out to us as <a href=\"mailto:info@drinkdio.com\" target=\"_blank\" title=\"mailto:info@drinkdio.com\">info@drinkdio.com<\/a>.<\/p>"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "faq_main_Jgn9pk"
+  ]
+}

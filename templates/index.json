@@ -16,13 +16,13 @@
           "type": "heading",
           "settings": {
             "heading": "Celestially Canned Cocktails",
-            "heading_size": "h0"
+            "heading_size": "h1"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "Modern twists on classic cocktails from around the world, in a can, made from the world’s finest,  all-natural ingredients.",
+            "text": "Modern twists on classic cocktails from around the world, in a can, made from the world’s finest, \u2028all-natural ingredients.",
             "text_style": "body"
           }
         },
@@ -30,11 +30,11 @@
           "type": "buttons",
           "settings": {
             "button_label_1": "Shop Now",
-            "button_link_1": "shopify://collections/shop-canned-cocktails-1",
-            "button_style_secondary_1": false,
+            "button_link_1": "shopify:\/\/collections\/shop-canned-cocktails",
+            "button_style_1": "primary",
             "button_label_2": "",
             "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_2": "primary"
           }
         }
       },
@@ -44,45 +44,57 @@
         "button"
       ],
       "settings": {
-        "image": "shopify://shop_images/hp-hero-d.jpg",
+        "image": "shopify:\/\/shop_images\/hp-hero-d_779800f8-40db-4c5e-ba09-5454e4e646ae.jpg",
+        "video": "shopify:\/\/files\/videos\/DIO_hp1.mp4",
         "image_overlay_opacity": 0,
         "image_height": "large",
         "desktop_content_position": "middle-left",
         "show_text_box": true,
         "desktop_content_alignment": "left",
-        "color_scheme": "scheme-1",
-        "image_behavior": "ambient",
+        "content_framed": true,
+        "image_framed": true,
+        "color_text": "#000000",
+        "color_bg": "#fffffb",
+        "color_accent": "#cb9700",
+        "image_behavior": "none",
         "mobile_content_alignment": "left",
         "stack_images_on_mobile": false,
-        "show_text_below": true
+        "show_text_below": true,
+        "padding_top_m": 0,
+        "padding_bottom_m": 0,
+        "padding_x_m": "20px",
+        "padding_top_d": 0,
+        "padding_bottom_d": 0,
+        "padding_x_d": "20px",
+        "overlay_mobile": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "flavor_carousel_c6Mg46": {
+      "type": "flavor-carousel",
       "settings": {
-        "title": "Drink Divinity",
+        "title": "Drink divinity",
         "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
         "collection": "flavors",
         "products_to_show": 8,
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "full_width": false,
-        "show_view_all": false,
+        "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": true,
-        "color_scheme": "scheme-1",
-        "image_ratio": "portrait",
-        "image_shape": "blob",
-        "show_secondary_image": true,
+        "enable_desktop_slider": false,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "capsule",
+        "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": true,
         "quick_add": "standard",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
-        "padding_top": 28,
-        "padding_bottom": 36
+        "padding_top": 56,
+        "padding_bottom": 0
       }
     },
     "multicolumn": {
@@ -91,9 +103,9 @@
         "column1": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/icon-snake.svg",
+            "image": "shopify:\/\/shop_images\/icon-snake.svg",
             "title": "Simple Ingredients, Divine Taste",
-            "text": "<p>Only clean & simple ingredients. No artificial colors, flavors, or preservatives.</p>",
+            "text": "<p>Only clean & simple ingredients. No artificial colors, flavors, or preservatives.<\/p>",
             "link_label": "",
             "link": ""
           }
@@ -101,9 +113,9 @@
         "column2": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/icon-snake.svg",
+            "image": "shopify:\/\/shop_images\/icon-snake.svg",
             "title": "sweetened sinlessly",
-            "text": "<p>Our lower sugar luxurious libations use natural sweeteners, and contain under 8g of sugar per can.</p>",
+            "text": "<p>Our lower sugar luxurious libations use natural sweeteners, and contain under 8g of sugar per can.<\/p>",
             "link_label": "",
             "link": ""
           }
@@ -111,9 +123,9 @@
         "column3": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/icon-snake.svg",
+            "image": "shopify:\/\/shop_images\/icon-snake.svg",
             "title": "Herculean Strength Spirits",
-            "text": "<p>Each of our top-shelf  spirits contain two  servings and 13.5-15%  ABV per cocktail.</p>",
+            "text": "<p>Each of our top-shelf \u2028spirits contain two \u2028servings and 13.5-15% \u2028ABV per cocktail.<\/p>",
             "link_label": "",
             "link": ""
           }
@@ -131,7 +143,7 @@
         "image_ratio": "adapt",
         "columns_desktop": 3,
         "column_alignment": "center",
-        "background_style": "none",
+        "background_style": "primary",
         "button_label": "",
         "button_link": "",
         "color_scheme": "scheme-1",
@@ -144,6 +156,13 @@
     "image_with_text_hMXjTj": {
       "type": "image-with-text",
       "blocks": {
+        "icon_UB8WRp": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-halo_29e30727-6986-4bda-9dcd-415884ec9896.svg",
+            "width": "100"
+          }
+        },
         "heading_7cm9F9": {
           "type": "heading",
           "settings": {
@@ -154,29 +173,40 @@
         "text_DRQ97N": {
           "type": "text",
           "settings": {
-            "text": "<p>Dionysus, the god of festivity and pleasure, bestowed upon mortals the gift of his exquisite elixirs. Within each drink is an instant encounter with splendors heretofore known only to the divine.</p>",
-            "text_style": "body"
+            "text": "<p>Dionysus, the god of festivity and pleasure, bestowed upon mortals the gift of his exquisite elixirs. Within each drink is an instant encounter with splendors heretofore known only to the divine.<\/p>",
+            "text_style": "body",
+            "alignment": "tw-text-center"
+          }
+        },
+        "icon_ejALjk": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-dio-sig.svg",
+            "width": "120"
           }
         },
         "button_7wJfrX": {
           "type": "button",
           "settings": {
             "button_label": "Our Story",
-            "button_link": "shopify://pages/our-story",
-            "button_style_secondary": false
+            "button_link": "shopify:\/\/pages\/our-story",
+            "button_style_secondary": true
           }
         }
       },
       "block_order": [
+        "icon_UB8WRp",
         "heading_7cm9F9",
         "text_DRQ97N",
+        "icon_ejALjk",
         "button_7wJfrX"
       ],
       "settings": {
-        "image": "shopify://shop_images/hp-about1.jpg",
+        "image": "shopify:\/\/shop_images\/hp-brand.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "text_first",
+        "desktop_column_width": "",
         "desktop_content_position": "top",
         "desktop_content_alignment": "left",
         "content_layout": "no-overlap",
@@ -184,15 +214,236 @@
         "color_scheme": "",
         "image_behavior": "none",
         "mobile_content_alignment": "left",
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
+    },
+    "product_marquee_V3AW8B": {
+      "type": "product-marquee",
+      "blocks": {
+        "feature_RH93f7": {
+          "type": "feature",
+          "settings": {
+            "title": "SUPER-NATURAL"
+          }
+        },
+        "feature_X4cNwg": {
+          "type": "feature",
+          "settings": {
+            "title": "LOW SUGAR"
+          }
+        },
+        "feature_ffHxQ7": {
+          "type": "feature",
+          "settings": {
+            "title": "HERCULEAN STRENGTH"
+          }
+        }
+      },
+      "block_order": [
+        "feature_RH93f7",
+        "feature_X4cNwg",
+        "feature_ffHxQ7"
+      ],
+      "settings": {
+        "background_color": "#fffffb",
+        "text_color": "#000000"
+      }
+    },
+    "image_banner_Tcm6pf": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_KGcAxw": {
+          "type": "heading",
+          "settings": {
+            "heading": "“elevated and unexpected”",
+            "heading_size": "tw-text-5xl"
+          }
+        },
+        "icon_TQjVqG": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/vogue.svg",
+            "width": "150px"
+          }
+        }
+      },
+      "block_order": [
+        "heading_KGcAxw",
+        "icon_TQjVqG"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/press.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "desktop_content_position": "middle-right",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "content_framed": true,
+        "image_framed": true,
+        "color_text": "#fffffb",
+        "color_bg": "rgba(0,0,0,0)",
+        "color_accent": "rgba(0,0,0,0)",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "padding_top_m": 64,
+        "padding_bottom_m": 64,
+        "padding_x_m": "20px",
+        "padding_top_d": 96,
+        "padding_bottom_d": 64,
+        "padding_x_d": "10%",
+        "overlay_mobile": true
+      }
+    },
+    "review_carousel_BmyWay": {
+      "type": "review-carousel",
+      "blocks": {
+        "slide_Ckcc3A": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "This brand had nothing to hide—all the ingredients are listed right on the label",
+            "reviewer": "james r.",
+            "location": "madison, wisconsin"
+          }
+        },
+        "slide_PQ8f7y": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "This canned cocktai joins other high-ABV cans offering quality ingredients but adds unexpected riffs on the classics",
+            "reviewer": "Sam R.",
+            "location": "brooklyn, new york"
+          }
+        },
+        "slide_f8E6Vf": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "All-natural, guilt-free, and perfect for hosting",
+            "reviewer": "Aaron s.",
+            "location": "los angeles, california"
+          }
+        },
+        "slide_raRJdQ": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "This brand had nothing to hide—all the ingredients are listed right on the label",
+            "reviewer": "james r.",
+            "location": "madison, wisconsin"
+          }
+        },
+        "slide_PQgyDV": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "This canned cocktai joins other high-ABV cans offering quality ingredients but adds unexpected riffs on the classics",
+            "reviewer": "Sam R.",
+            "location": "brooklyn, new york"
+          }
+        },
+        "slide_EniemQ": {
+          "type": "slide",
+          "settings": {
+            "halo": true,
+            "title": "",
+            "review": "All-natural, guilt-free, and perfect for hosting",
+            "reviewer": "Aaron s.",
+            "location": "los angeles, california"
+          }
+        }
+      },
+      "block_order": [
+        "slide_Ckcc3A",
+        "slide_PQ8f7y",
+        "slide_f8E6Vf",
+        "slide_raRJdQ",
+        "slide_PQgyDV",
+        "slide_EniemQ"
+      ],
+      "settings": {
+        "title": "Whispers from Olympus",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "double_feature_RTdRtA": {
+      "type": "double-feature",
+      "blocks": {
+        "feature_kRbeAU": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/241212_Dio_Lifestyle_0488_69db3e9b-76bd-4d75-b0ed-14f5967f2457.jpg",
+            "title": "Gift Sets",
+            "text": "Our exquisite elixirs are perfect for those in a perpetual pursuit of pleasure. Gift one, gift all...just be careful to not open Pandora’s Box. What will you choose?",
+            "button_label": "shop now",
+            "button_link": "shopify:\/\/collections\/gift-sets",
+            "button_style_secondary": false
+          }
+        },
+        "feature_id8MxN": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/DIO_Shot7_0134.jpg",
+            "title": "find us",
+            "text": "Find our tantalizing tonics at select premium retailers, bars, and restaurants near you.",
+            "button_label": "store locator",
+            "button_link": "shopify:\/\/pages\/store-locator",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "feature_kRbeAU",
+        "feature_id8MxN"
+      ],
+      "settings": {
+        "height": "adapt",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 100
       }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection",
+    "flavor_carousel_c6Mg46",
     "multicolumn",
-    "image_with_text_hMXjTj"
+    "image_with_text_hMXjTj",
+    "product_marquee_V3AW8B",
+    "image_banner_Tcm6pf",
+    "review_carousel_BmyWay",
+    "double_feature_RTdRtA"
   ]
 }
