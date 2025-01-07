@@ -111,7 +111,7 @@ cart-drawer:not(.is-empty) .cart-drawer__collection {
 }
 
 .drawer__footer {
-  border-top: 2px dotted var(--color-gold);
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.2);
   padding: 1.5rem 0;
 }
 
@@ -121,7 +121,7 @@ cart-drawer-items.is-empty + .drawer__footer {
 
 .drawer__footer > details {
   margin-top: -1.5rem;
-  border-bottom: 2px dotted var(--color-gold);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.2);
 }
 
 .drawer__footer > details[open] {
@@ -239,11 +239,6 @@ cart-drawer-items {
 }
 
 .cart-drawer .cart-items th {
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
-}
-
-.cart-drawer .cart-items .cart-item:not(:only-child) {
-	padding-top: 8px;
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
 }
 

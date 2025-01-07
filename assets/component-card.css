@@ -15,28 +15,6 @@
   flex-direction: column;
   height: 100%;
 }
-.card.collection {
-  display: flex;
-  flex-direction: column;
-	align-items: center;
-}
-@media screen and (min-width: 990px) {
-	.card.collection {
-		flex-direction: row-reverse;
-		padding: 30px 0;
-	}
-	.product-grid .grid__item:nth-of-type(even) .card.collection {
-		flex-direction: row;
-	}
-}
-@media screen and (max-width: 989px) {
-	.card.collection .quick-add__submit {
-		width: 100%;
-	}
-	.product-grid .grid__item {
-		margin-bottom: 60px !important;
-	}
-}
 
 .card.card--horizontal {
   --text-alignment: left;
@@ -161,7 +139,7 @@
 
 .card__information {
   grid-row-start: 2;
-  padding: 20px;
+  padding: 1.3rem 1rem;
 }
 
 .card:not(.ratio) > .card__content {
@@ -299,11 +277,9 @@
 
 @media screen and (min-width: 750px) {
   .card__information {
-    padding: 40px 40px 20px;
+    padding-bottom: 1.7rem;
+    padding-top: 1.7rem;
   }
-	.card.can .card__information {
-		padding: 20px 20px;
-	}
 }
 
 .card__badge {
@@ -384,7 +360,7 @@
 
 .card__heading a::after {
   bottom: 0;
-  content: none;
+  content: '';
   left: 0;
   position: absolute;
   right: 0;
@@ -440,6 +416,11 @@
     transition: transform var(--duration-long) ease;
     transform: scale(1.03);
   }
+
+  .underline-links-hover:hover a {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
 }
 
 .card--standard.card--media .card__inner .card__information,
@@ -460,12 +441,10 @@
   padding: 0;
 }
 
-/*
 .card--standard > .card__content .card__information {
   padding-left: 0;
   padding-right: 0;
 }
-*/
 
 .card--card.card--media .card__inner .card__information,
 .card--card.card--text .card__inner,
@@ -634,137 +613,4 @@
   .grid__item:nth-child(8n) .product-card-wrapper:hover .shape--blob {
     clip-path: polygon(var(--shape--blob-5));
   }
-}
-
-.can-branding-overlay {
-	border-style: solid ;
-	border-width: 3px;
-	border-color: var(--can-color-1);
-}
-
-.overlay-1 {
-	border-style: solid ;
-	border-width: 3px;
-	border-color: var(--can-color-0);
-	transition: all 1s ease 0.125s;
-	opacity: 0;
-}
-.overlay-2 {
-	border-style: solid ;
-	border-width: 3px;
-	border-color: var(--can-color-1);
-	transition: all 1s ease 0.125s;
-	opacity: 0;
-}
-.overlay-3 {
-	border-style: solid ;
-	border-width: 4px;
-	border-color: var(--can-color-0);
-	padding: 2px;
-	transition: all 1s ease 0.125s;
-	opacity: 0;
-}
-.overlay-4 {
-	stroke-linecap: round;
-	stroke-dasharray: 0 10;
-	stroke-width: 4px;
-	transition: all 1s ease 0.125s;
-	opacity: 0;
-}
-
-@keyframes dash {
-	to {
-		stroke-dashoffset: 2000;
-	}
-}
-.card.can .card__content {
-	display: flex;
-	flex-direction: column;
-	transition: transform 1.2s ease 0.125s;
-}
-.card.can .can-branding-underlay-wrapper {
-	width: 133%;
-	position: absolute;
-	height: auto;
-	width: 133%;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	transition: all 1.2s ease 0.125s;
-	transform-origin: center center;
-	z-index: -1;
-}
-.card.can .can-branding-underlay path {
-	width: 100%;
-	height: auto;
-	transform-origin: center center;
-	transition: all 1s ease 0.125s;
-	transform: scale(0.7);
-}
-.card.can:not(:hover) .can-branding-overlay-layer {
-	padding: 0 !important;
-}
-/*
-.card.can .card__content .card__information {
-	position: relative;
-	--borderColor: #000;
-	--bgColor: #fffffb;
-	transition: all 1.2s ease 0.125s;
-	background: radial-gradient(8px at 8px 8px, #0000 calc(100%), var(--borderColor) calc(100%) 100%, #0000) calc(-1* 8px) calc(-1* 8px), linear-gradient(90deg, var(--borderColor) 0, #0000 0 calc(100%), var(--borderColor) 0) 50% / 100% calc(100%) no-repeat, linear-gradient(var(--borderColor) 0, #0000 0 calc(100%), var(--borderColor) 0) 50% / calc(100%) 100% no-repeat, var(--bgColor);
-	--mask: radial-gradient(calc(8px - 2px) at 8px 8px, #0000 100%, #000) calc(-1* 8px) calc(-1* 8px);
-	-webkit-mask: var(--mask);
-	mask: var(--mask);
-	transform: translateX(-50%);
-	width: 120%;
-	left: 50%;
-}
-
-.card.can:hover .card__content .card__information {
-	--borderColor: #000;
-	--bgColor: #fffffb;
-	background: radial-gradient(8px at 8px 8px, #0000 calc(100% - 2px), var(--borderColor) calc(100% - 2px) 100%, #0000) calc(-1* 8px) calc(-1* 8px), linear-gradient(90deg, var(--borderColor) 2px, #0000 0 calc(100% - 2px), var(--borderColor) 0) 50% / 100% calc(100%) no-repeat, linear-gradient(var(--borderColor) 2px, #0000 0 calc(100% - 2px), var(--borderColor) 0) 50% / calc(100%) 100% no-repeat, var(--bgColor);
-	transform: translateY(-64px) translateX(-50%);
-	padding: 10px;
-}
-*/
-.card.can .card__content .card__information {
-	position: relative;
-	--borderColor: #000;
-	--bgColor: #fffffb;
-	transition: all 1.2s ease 0.125s;
-	background: transparent;
-	--mask: radial-gradient(calc(8px - 2px) at 8px 8px, #0000 100%, #000) calc(-1* 8px) calc(-1* 8px);
-	-webkit-mask: var(--mask);
-	mask: var(--mask);
-	transform: translateX(-50%);
-	width: 120%;
-	left: 50%;
-}
-.card.can:hover .card__content .card__information {
-	--borderColor: #000;
-	--bgColor: #fffffb;
-	transform: translateY(36px) translateX(-50%);
-}
-.card.can .card__content .quick-add__submit {
-	transition: all 1.2s ease 0.125s;
-
-}
-.card.can:hover .card__content .quick-add__submit {
-	transform: translateY(36px);
-}
-
-.card.can:hover .overlay-1, 	
-.card.can:hover .overlay-2, 	
-.card.can:hover .overlay-3, 	
-.card.can:hover .overlay-4 {
-	opacity: 1;
-}
-.card.can:hover .can-branding-underlay path {
-	transform: scale(1);
-}
-.card.can:hover .overlay-4 {
-	animation: dash 100s linear infinite;
-}
-.can-branding-underlay-group-1 {
-	transition-delay: 1s;
 }
