@@ -1,0 +1,86 @@
+<div
+  class='frame-fancy4 {{ class }}'
+  style='--frame-bg: {{ background | default: '#fffffb' }}; --frame-accent: {{ accent | default: '#CB9700' }}; --cornerSize: {{ size_corner | default: '20px' }}; --cornerSizeLg: {{ size_corner_lg | default: '28px' }}; --padding: {{  padding | default: 0 }}; --paddingLg: {{  padding_lg | default: 0 }};'
+>
+  <div class='frame-fancy4-top tw-flex tw-w-full' style=''>
+    {% render 'frame-fancy4-corner', class: 'fancy4-corner' %}
+    {% render 'frame-fancy4-side-y', class: 'frame-fancy4-inner' %}
+    {% render 'frame-fancy4-corner', class: 'fancy4-corner tw-rotate-90' %}
+  </div>
+
+  <div
+    class='frame-fancy4-center {{ content_class | default: 'tw-flex tw-overflow-hidden' }}'
+    style='background-color: var(--frame-bg);'
+  >
+    {% render 'frame-fancy4-side-x', class: 'frame-fancy4-side-x tw-relative tw-left-0 tw-z-[1]' %}
+
+    <div
+      class='{{ content_wrapper | default: 'frame-fancy4-content tw--my-[20px] tw--mx-[10px] tw-w-full tw-relative tw-z-[2]' }}'
+    >
+      {{ content }}
+    </div>
+
+    {% render 'frame-fancy4-side-x', class: 'frame-fancy4-side-x tw-right-0 tw-rotate-180 tw-z-[1]' %}
+  </div>
+
+  <div class='frame-fancy4-bottom tw-flex tw-w-full tw-rotate-180'>
+    {% render 'frame-fancy4-corner', class: 'fancy4-corner' %}
+    {% render 'frame-fancy4-side-y', class: 'frame-fancy4-inner' %}
+    {% render 'frame-fancy4-corner', class: 'fancy4-corner tw-rotate-90' %}
+  </div>
+  <style>
+      .frame-fancy4-top,
+      .frame-fancy4-bottom {
+        height: var(--cornerSize);
+        padding: var(--padding);
+      }
+      .frame-fancy4-inner {
+        width: calc(100% - (var(--cornerSize) * 2));
+        height: var(--cornerSize);
+      }
+      .fancy4-corner {
+        width: var(--cornerSize);
+        height: var(--cornerSize);
+      }
+      .frame-fancy4-side-x {
+        position: absolute;
+        width: var(--cornerSize);
+     height: calc(100% - (var(--padding) * 2));
+    }
+      .frame-fancy4-center {
+        margin-left: var(--padding);
+        margin-right: var(--padding);
+     overflow: hidden;
+      }
+      @media (min-width: 990px) {
+        .frame-fancy4-top,
+        .frame-fancy4-bottom {
+          height: var(--cornerSizeLg);
+          padding: var(--paddingLg);
+        }
+        .frame-fancy4-center {
+          margin-left: var(--paddingLg);
+          margin-right: var(--paddingLg);
+          width: calc(100% - (var(--paddingLg) * 2));
+        }
+        .frame-fancy4-inner {
+          width: calc(100% - (var(--cornerSizeLg) * 2));
+          height: var(--cornerSizeLg);
+        }
+        .fancy4-corner {
+          width: var(--cornerSizeLg);
+          height: var(--cornerSizeLg);
+        }
+        .frame-fancy4-side-x {
+          position: absolute;
+          width: var(--cornerSizeLg);
+          height: calc(100% - (var(--paddingLg) * 2));
+        }
+      }
+
+      .frame-fancy4-side-x {
+        height: 100%;
+     max-height 100%;
+      }
+  </style>
+</div>

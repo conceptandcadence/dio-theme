@@ -1,0 +1,114 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  Usage:
+  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+
+
+                <div class=''>
+                  {%- for product in collections.flavors.products -%}
+                    <div
+                      id='Slide-{{ section.id }}-{{ forloop.index }}'
+                      class='grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'
+                      {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        style='--animation-order: {{ forloop.index }};'
+                      {% endif %}
+                    >
+                      {% render 'card-product-carousel',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_shape: section.settings.image_shape,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        skip_styles: skip_card_product_styles,
+                        section_id: section.id,
+                        quick_add: section.settings.quick_add
+                      %}
+                    </div>
+                    {%- assign skip_card_product_styles = true -%}
+                  {%- endfor -%}
+                </div>
+{% endcomment %}
+{% assign flavors_allowed = true %}
+{% if product.tags contains 'hide-flavors' %}
+  {% assign flavors_allowed = false %}
+{% endif %}
+{%- unless collections[block.settings.collection].products == blank or flavors_allowed == false -%}
+  <variant-selects
+    id='variant-selects-{{ section.id }}'
+    data-section='{{ section.id }}'
+    {{ block.shopify_attributes }}
+  >
+    <fieldset class='js product-form__input product-form__input--swatch'>
+      <legend class='form__label'>{{ option.name }}</legend>
+      {%- for swatch_product in collections.flavors.products -%}
+        {%- if swatch_product.metafields.media.can.value -%}
+          {%- assign primary_image = swatch_product.metafields.media.can.value -%}
+          {%- assign swatch_image = primary_image | image_url: width: 50, height: 100 -%}
+          {%- assign swatch_value = 'url(' | append: swatch_image | append: ')' -%}
+        {%- endif -%}
+
+        {%- assign checked = false -%}
+        {%- if product.id == swatch_product.id -%}
+          {%- assign checked = true -%}
+        {%- endif -%}
+
+        {%- capture input_id -%}
+					{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+				{%- endcapture -%}
+
+        {%- capture input_name -%}
+					{{ option.name }}-{{ option.position }}
+				{%- endcapture -%}
+
+        {%- capture input_dataset -%}
+					data-product-url="{{ value.product_url }}"
+					data-option-value-id="{{ value.id }}"
+				{%- endcapture -%}
+
+        {%- capture label_unavailable -%}
+					<span class="visually-hidden label-unavailable">
+						{{- 'products.product.variant_sold_out_or_unavailable' | t -}}
+					</span>
+				{%- endcapture -%}
+        {%- capture help_text -%}
+					<span class="visually-hidden">{{ value | escape }}</span>
+					{{ label_unavailable }}
+				{%- endcapture -%}
+        {%
+          render 'flavor-input',
+          id: swatch_product.id,
+          name: swatch_product.title,
+          value: value | escape,
+          swatch: swatch_value,
+          product_form_id: swatch_product.id,
+          checked: checked,
+          url: swatch_product.url,
+          shape: 'capsule',
+          help_text: nil,
+          additional_props: nil
+        %}
+      {%- endfor -%}
+    </fieldset>
+  </variant-selects>
+  <style>
+    .rc-option__price {
+      display: none;
+    }
+    .rc-option__text {
+      font-family: var(--font-subheading-family);
+      font-style: var(--font-subheading-style);
+      font-size: calc(var(--font-heading-scale) * 1.4rem);
+      font-weight: 400;
+      text-transform: lowercase;
+      letter-spacing: 0.5px;
+      line-height: calc(var(--font-heading-scale) * 1.5rem);
+    }
+  </style>
+{%- endunless -%}

@@ -1,0 +1,84 @@
+<script>
+  function getGiftNoteToValue() {
+    document.querySelectorAll('#note_to').forEach((el) => {
+      if (el?.value && el?.value !== '') {
+        console.log('window.giftNoteTo', el?.value);
+        window.giftNoteTo = el.value;
+      }
+    });
+    console.log('window.giftNoteTo', window.giftNoteTo);
+  }
+  function getGiftNoteFromValue() {
+    document.querySelectorAll('#note_from').forEach((el) => {
+      if (el?.value && el?.value !== '') {
+        console.log(`From: ${el?.value}`);
+        window.giftNoteFrom = el.value;
+      }
+    });
+  }
+  function getGiftNoteMsgValue() {
+    document.querySelectorAll('#note_msg').forEach((el) => {
+      if (el?.value && el?.value !== '') {
+        console.log(`Msg: ${el?.value}`);
+        window.giftNoteMsg = el.value;
+      }
+    });
+  }
+  function getGiftNoteMsgCountValue() {
+    document.querySelectorAll('#note').forEach((el) => {
+      if (el?.length > 0) {
+        window.giftNoteMsgCount = el.value;
+      }
+    });
+  }
+  function setValueOfAll(el, value) {
+    document.querySelectorAll(el).forEach((el) => {
+      el.value = value;
+    });
+  }
+  function removeClassAll(el, className) {
+    document.querySelectorAll(el).forEach((el) => {
+      el.classList.remove(className);
+    });
+  }
+  function setGiftNoteTemplate() {
+    //console.log(window.giftNoteTo, window.giftNoteFrom, window.giftNoteMsg)
+    return `${window.giftNoteTo ? `To: ${window.giftNoteTo}\n` : ''}${
+      window.giftNoteFrom ? `From: ${window.giftNoteFrom}\n` : ''
+    }${window.giftNoteTo && window.giftNoteFrom ? '\n' : ''}${window.giftNoteMsg}`;
+  }
+  function giftNoteObserver() {
+    getGiftNoteToValue();
+    getGiftNoteFromValue();
+    getGiftNoteMsgValue();
+    getGiftNoteMsgCountValue();
+
+    // Gift Note
+    setValueOfAll('#note', setGiftNoteTemplate(window.giftNoteTo, window.giftNoteFrom, window.giftNoteMsg));
+
+    // Gift Note Count
+    if (window.giftNoteMsgCount > 0) {
+      document.querySelectorAll('.cart-note-charcount .current').forEach((el) => {
+        el.innerHTML = giftNoteMsgCount;
+      });
+    }
+
+    if (window.giftNoteMsgCount >= 180) {
+      addClassAll('.cart-note-charcount .current', 'warning');
+    }
+    if (window.giftNoteMsgCount == 200) {
+      addClassAll('.cart-note-charcount .current', 'maxed');
+    }
+    if (window.giftNoteMsgCount < 180) {
+      removeClassAll('.cart-note-charcount .current', 'warning');
+    }
+    if (window.giftNoteMsgCount < 200) {
+      removeClassAll('.cart-note-charcount .current', 'maxed');
+    }
+  }
+  window.addEventListener('DOMContentLoaded', function () {
+    let body = document.querySelector('body');
+    body.addEventListener('keyup', giftNoteObserver);
+  });
+  console.log('v3');
+</script>

@@ -1,0 +1,16 @@
+{% if product.metafields.flavor.colors != blank %}
+  {% assign color_scheme = product.metafields.flavor.colors.value %}
+  {% assign color_border = color_scheme.border %}
+  {% assign color_inner = color_scheme.inner %}
+  {% assign color_outer = color_scheme.outer %}
+  {% assign color_accent = color_scheme.accent %}
+  {% assign color_background_1 = color_scheme.background_1 %}
+  {% assign color_background_2 = color_scheme.background_2 %}
+{% endif %}
+
+<style>
+  [data-template='product'] #MainContent {
+    background-repeat: round;
+  background-color: {{ color_background_1 }};
+  }
+</style>

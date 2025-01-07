@@ -1,0 +1,48 @@
+{% comment %}
+  Renders a swatch input component.
+  Accepts:
+  - id: {String} unique input id
+  - type: {String} input type. Accepts 'radio' or 'checkbox', defaults to 'radio' (optional)
+  - name: {String} input name,
+  - value: {ProductOptionValueDrop} input value
+  - swatch: {SwatchDrop} the swatch drop
+  - product_form_id: {String} id of the form associted with the input
+  - checked: {Boolean} default checked status
+  - disabled: {Boolean} default disabled status (optional)
+  - visually_disabled: {Boolean} style the swatch as disabled, but leave the input enabled (optional)
+  - shape: {String} swatch shape. Accepts 'square', defaults to circle (optional)
+  - help_text: {String} additional content to render inside the label (optional)
+  - additional_props: {String} (optional) additional properties to attach to the input
+
+  Usage:
+   {% render 'swatch-input',
+      id: input_id,
+      name: input_name,
+      value: input_value,
+      swatch: swatch,
+      product_form_id: product_form_id,
+      checked: checked
+    %}
+{% endcomment %}
+
+<a
+  for='{{ id }}'
+  title='{{ value }}'
+  class='swatch-input__label tw-relative tw-mr-5 tw-transition-transform hover:tw-scale-[1.05]'
+  href='{{ url }}'
+>
+  {% if checked %}
+    {% render 'icon-halo',
+      class: 'tw-text-gold tw-mx-auto tw-w-full tw-max-w-full tw-w-24 tw-left-1/2 tw-absolute tw-scale-[1.5] tw--translate-x-1/2 -tw-translate-y-[150%]'
+    %}
+  {% endif %}
+  <span
+    {% if swatch %}
+      class='swatch'
+      style='--swatch--background: {{ swatch }};'
+    {% else %}
+      class='swatch swatch--unavailable '
+    {% endif %}
+  ></span>
+</a>
+{% if checked %}{% endif %}

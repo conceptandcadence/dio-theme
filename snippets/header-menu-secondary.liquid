@@ -5,9 +5,9 @@
   {% render 'header-dropdown-menu' %}
 {% endcomment %}
 
-<nav class='header__inline-menu'>
+<nav class='header__inline-menu tw-mr-8'>
   <ul class='list-menu list-menu--inline' role='list'>
-    {%- for link in section.settings.menu.links -%}
+    {%- for link in linklists['navigation-secondary'].links -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
@@ -80,28 +80,24 @@
             </details>
           </header-menu>
         {%- else -%}
-          {% if forloop.first %}
-            {% render 'Button', href: link.url, style: 'secondary', content: link.title, classes: 'tw-w-auto tw-mr-2' %}
-          {%- else -%}
-            <a
-              id='HeaderMenu-{{ link.handle }}'
-              href='{{ link.url }}'
-              class='header__menu-item list-menu__item focus-inset h5 x3 h4 tw-relative'
-              {% if link.current %}
-                aria-current='page'
+          <a
+            id='HeaderMenu-{{ link.handle }}'
+            href='{{ link.url }}'
+            class='header__menu-item list-menu__item focus-inset h5 x3 h4 tw-relative'
+            {% if link.current %}
+              aria-current='page'
+            {% endif %}
+          >
+            <span
+              {%- if link.current %}
+                class='link--animated-hover active'
+              {% else %}
+                class='link--animated-hover'
               {% endif %}
             >
-              <span
-                {%- if link.current %}
-                  class='link--animated-hover active'
-                {% else %}
-                  class='link--animated-hover'
-                {% endif %}
-              >
-                {{- link.title | escape -}}
-              </span>
-            </a>
-          {%- endif -%}
+              {{- link.title | escape -}}
+            </span>
+          </a>
         {%- endif -%}
       </li>
     {%- endfor -%}
